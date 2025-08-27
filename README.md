@@ -255,7 +255,7 @@ logging:
 ## 技術仕様
 
 ### AI画像認識
-- **モデル**: OpenAI GPT-4o-mini
+- **モデル**: OpenAI GPT-4.1-mini
 - **入力**: JPEG/PNG画像（base64エンコード）
 - **出力**: JSON形式の解析結果
 - **対応文字**: 「田」（手書き・印刷問わず）
