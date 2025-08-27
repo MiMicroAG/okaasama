@@ -1,0 +1,39 @@
+# 認証情報ファイル（GitHubにアップロードしない）
+credentials.json
+token.json
+
+# 設定ファイル（APIキーなどが含まれる可能性がある）
+config.yaml
+
+# ワークフロー結果ファイル
+workflow_results_*.json
+
+# Pythonキャッシュファイル
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 仮想環境
+venv/
+env/
+.venv/
+
+# IDE設定ファイル
+.vscode/
+.idea/
+
+# OS固有ファイル
+.DS_Store
+Thumbs.db
+
+# ログファイル
+*.log
+
+# 環境変数ファイル
+.env
+.env.local
+
+# テンポラリファイル
+*.tmp
+*.temp

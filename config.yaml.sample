@@ -1,0 +1,28 @@
+# カレンダー画像自動登録システム設定ファイル
+# 環境変数が設定されている場合は優先されます
+#
+# 使用方法:
+# 1. このファイルを config.yaml にコピー
+# 2. 以下の環境変数を設定:
+#    - OPENAI_API_KEY: OpenAI APIキー
+#    - OPENAI_API_BASE: OpenAI APIベースURL（オプション）
+# 3. Google Calendar認証を設定
+
+openai:
+  api_key: ""  # 環境変数 OPENAI_API_KEY を使用
+  api_base: ""  # 環境変数 OPENAI_API_BASE を使用（オプション）
+  model: "gpt-4o-mini"  # 使用するモデル（高性能版）
+  max_image_size_kb: 256  # 画像圧縮時の最大ファイルサイズ（KB）
+
+google_calendar:
+  credentials_file: "credentials.json"  # OAuth認証情報ファイル
+  token_file: "token.json"  # アクセストークンファイル
+
+workflow:
+  event_title: "母出勤"  # 登録するイベントのタイトル
+  event_description: "カレンダー画像から自動検出された勤務日"  # イベントの説明
+  dry_run: false  # ドライランモード（デフォルト: false）
+
+logging:
+  level: "INFO"  # ログレベル（DEBUG, INFO, WARNING, ERROR）
+  format: "%(asctime)s - %(levelname)s - %(message)s"  # ログフォーマット
