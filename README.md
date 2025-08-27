@@ -7,7 +7,7 @@
 ## 主な機能
 
 ### 1. AI画像認識による文字検出
-- OpenAI GPT-4oを使用した高精度な画像解析（高性能モデル）
+- ChatGPT-4o-miniを使用した高精度な画像解析
 - 画像自動圧縮機能（256KB以内に最適化）
 - 年月情報自動読み取り機能（カレンダー中央上部の年月を検出）
 - 手書き文字にも対応
@@ -90,7 +90,7 @@ python ai_calendar_analyzer.py
 openai:
   api_key: "your-openai-api-key"
   api_base: ""
-  model: "gpt-4o"
+  model: "gpt-4o-mini"
   max_image_size_kb: 256  # 画像圧縮時の最大ファイルサイズ（KB）
 
 google_calendar:
