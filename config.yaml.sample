@@ -15,13 +15,54 @@ openai:
   max_image_size_kb: 256  # 画像圧縮時の最大ファイルサイズ（KB）
 
 google_calendar:
-  credentials_file: "credentials.json"  # OAuth認証情報ファイル
-  token_file: "token.json"  # アクセストークンファイル
+  # 複数アカウント設定（最大4つまで）
+  # account1はメインアカウントとして使用されます
+  accounts:
+    account1:
+      enabled: true  # このアカウントに登録するかどうか（メインアカウント）
+      name: "メインアカウント"  # アカウントの表示名
+      credentials_file: "credentials.json"  # OAuth認証情報ファイル
+      token_file: "token.json"  # アクセストークンファイル
+      calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
+      email: "main@example.com"  # 通知メール送信先アドレス
+    
+    account2:
+      enabled: false  # このアカウントに登録するかどうか
+      name: "サブアカウント1"  # アカウントの表示名
+      credentials_file: "credentials2.json"  # OAuth認証情報ファイル
+      token_file: "token2.json"  # アクセストークンファイル
+      calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
+      email: "sub1@example.com"  # 通知メール送信先アドレス
+    
+    account3:
+      enabled: false  # このアカウントに登録するかどうか
+      name: "サブアカウント2"  # アカウントの表示名
+      credentials_file: "credentials3.json"  # OAuth認証情報ファイル
+      token_file: "token3.json"  # アクセストークンファイル
+      calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
+      email: "sub2@example.com"  # 通知メール送信先アドレス
+    
+    account4:
+      enabled: false  # このアカウントに登録するかどうか
+      name: "サブアカウント3"  # アカウントの表示名
+      credentials_file: "credentials4.json"  # OAuth認証情報ファイル
+      token_file: "token4.json"  # アクセストークンファイル
+      calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
+      email: "sub3@example.com"  # 通知メール送信先アドレス
+
+gmail:
+  enabled: true  # Gmail通知を有効にするかどうか
+  smtp_server: "smtp.gmail.com"  # SMTPサーバー
+  smtp_port: 587  # SMTPポート
+  username: "your-gmail@gmail.com"  # Gmailアドレス
+  password: "your-app-password"  # Gmail App Password（2段階認証の場合はアプリパスワード）
+  from_email: "your-gmail@gmail.com"  # 送信元アドレス
 
 workflow:
   event_title: "母出勤"  # 登録するイベントのタイトル
   event_description: "カレンダー画像から自動検出された勤務日"  # イベントの説明
   dry_run: false  # ドライランモード（デフォルト: false）
+  multi_account_enabled: false  # 複数アカウントに登録するかどうか
   monitor_path: "C:/Users/ユーザー名/OneDrive/監視フォルダ"  # OneDrive監視フォルダのパス（オプション）
 
 logging:

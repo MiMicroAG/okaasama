@@ -18,6 +18,15 @@ from config_loader import config_loader
 from PIL import Image, ImageEnhance, ImageFilter
 import io
 
+# HEIC対応を追加
+try:
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+    HEIC_SUPPORTED = True
+except ImportError:
+    HEIC_SUPPORTED = False
+    print("警告: pillow-heifがインストールされていないため、HEICファイルはサポートされません")
+
 class AICalendarAnalyzer:
     def __init__(self):
         """AI カレンダー解析クラスの初期化"""

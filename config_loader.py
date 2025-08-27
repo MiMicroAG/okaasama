@@ -124,17 +124,53 @@ class ConfigLoader:
             'max_image_size_kb': self.get('openai.max_image_size_kb', 256)
         }
     
-    def get_google_calendar_config(self) -> Dict[str, str]:
+    def get_google_calendar_accounts_config(self) -> Dict[str, Dict[str, Any]]:
         """
-        Google Calendar設定を取得
+        Google Calendar複数アカウント設定を取得
         
         Returns:
-            Dict[str, str]: Google Calendar設定
+            Dict[str, Dict[str, Any]]: 複数アカウント設定
         """
-        return {
-            'credentials_file': self.get('google_calendar.credentials_file', 'credentials.json'),
-            'token_file': self.get('google_calendar.token_file', 'token.json')
-        }
+        accounts_config = self.get('google_calendar.accounts', {})
+        print(f"デバッグ: 全アカウント設定: {accounts_config}")
+        enabled_accounts = {}
+        
+        for account_key, account_config in accounts_config.items():
+            if account_config.get('enabled', False):
+                enabled_accounts[account_key] = {
+                    'name': account_config.get('name', account_key),
+                    'credentials_file': account_config.get('credentials_file', f'credentials_{account_key}.json'),
+                    'token_file': account_config.get('token_file', f'token_{account_key}.json'),
+                    'calendar_id': account_config.get('calendar_id', 'primary'),
+                    'email': account_config.get('email', '')
+                }
+        
+        print(f"デバッグ: 有効化されたアカウント: {enabled_accounts}")
+        return enabled_accounts
+    
+    def get_google_calendar_config(self) -> Dict[str, str]:
+        """
+        Google Calendarメインアカウント設定を取得（account1を使用）
+        
+        Returns:
+            Dict[str, str]: Google Calendarメインアカウント設定
+        """
+        # account1をメインアカウントとして使用
+        accounts_config = self.get('google_calendar.accounts', {})
+        if 'account1' in accounts_config and accounts_config['account1'].get('enabled', False):
+            account_config = accounts_config['account1']
+            return {
+                'credentials_file': account_config.get('credentials_file', 'credentials.json'),
+                'token_file': account_config.get('token_file', 'token.json'),
+                'calendar_id': account_config.get('calendar_id', 'primary')
+            }
+        else:
+            # フォールバック：従来の設定を使用
+            return {
+                'credentials_file': self.get('google_calendar.credentials_file', 'credentials.json'),
+                'token_file': self.get('google_calendar.token_file', 'token.json'),
+                'calendar_id': 'primary'
+            }
     
     def get_workflow_config(self) -> Dict[str, Any]:
         """
@@ -143,10 +179,29 @@ class ConfigLoader:
         Returns:
             Dict[str, Any]: ワークフロー設定
         """
+        monitor_path = self.get('workflow.monitor_path', '')
+        if monitor_path:
+            monitor_path = os.path.expandvars(monitor_path)
+        
         return {
             'event_title': self.get('workflow.event_title', '母出勤'),
             'event_description': self.get('workflow.event_description', 'カレンダー画像から自動検出された勤務日'),
-            'dry_run': self.get('workflow.dry_run', False)
+            'dry_run': self.get('workflow.dry_run', False),
+            'monitor_path': monitor_path
+        }
+    
+    def get_gmail_config(self) -> Dict[str, str]:
+        """
+        Gmail設定を取得
+        
+        Returns:
+            Dict[str, str]: Gmail設定
+        """
+        return {
+            'enabled': str(self.get('gmail.enabled', False)),
+            'credentials_file': self.get('gmail.credentials_file', 'credentials_gmail.json'),
+            'token_file': self.get('gmail.token_file', 'token_gmail.json'),
+            'from_email': self.get('gmail.from_email', '')
         }
     
     def get_logging_config(self) -> Dict[str, str]:
@@ -160,17 +215,18 @@ class ConfigLoader:
             'level': self.get('logging.level', 'INFO'),
             'format': self.get('logging.format', '%(asctime)s - %(levelname)s - %(message)s')
         }
-    
+
     def setup_logging(self):
         """
-        ログ設定を適用
+        ログ設定を適用（互換性のためのラッパー）
         """
         log_config = self.get_logging_config()
-        level = getattr(logging, log_config['level'].upper(), logging.INFO)
-        format_str = log_config['format']
-        
+        level = getattr(logging, str(log_config.get('level', 'INFO')).upper(), logging.INFO)
+        format_str = log_config.get('format', '%(asctime)s - %(levelname)s - %(message)s')
+
+        # 基本的なログ設定を行う（既に設定済みでも問題ない）
         logging.basicConfig(level=level, format=format_str)
-        print(f"ログレベルを設定しました: {log_config['level']}")
+        print(f"ログレベルを設定しました: {log_config.get('level', 'INFO')}")
 
 # グローバル設定ローダーインスタンス
 config_loader = ConfigLoader()
