@@ -6,3 +6,4 @@ requests>=2.25.0
 tenacity>=8.0.0
 PyYAML>=6.0
 Pillow>=10.0.0
+pillow-heif>=0.10.0

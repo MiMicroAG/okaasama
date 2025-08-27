@@ -45,6 +45,14 @@ class IntegratedCalendarWorkflow:
         event_description = event_description or workflow_config['event_description'] or "画像から検出した日付"
         dry_run = dry_run if dry_run is not None else workflow_config['dry_run']
         
+        # 有効なアカウント数を取得してマルチアカウント判定
+        enabled_accounts = config_loader.get_google_calendar_accounts_config()
+        is_multi_account = len(enabled_accounts) > 1
+        
+        print(f"デバッグ: 有効アカウント数 = {len(enabled_accounts)}")
+        print(f"デバッグ: マルチアカウントモード = {is_multi_account}")
+        print(f"デバッグ: workflow_config = {workflow_config}")
+        
         # 型保証: Noneでないことを確認
         assert event_title is not None
         assert event_description is not None
@@ -143,14 +151,46 @@ class IntegratedCalendarWorkflow:
 
         if dry_run:
             print("⚠ ドライランモード: 実際の登録はスキップします")
-            calendar_results = {date: True for date in found_dates}
+            calendar_results = {date: {'status': 'created', 'event_id': None, 'message': 'ドライランモード'} for date in found_dates}
             success_count = len(found_dates)
         else:
             try:
-                calendar_results = self.calendar_manager.create_multiple_events(
-                    found_dates, event_title, event_description
-                )
-                success_count = sum(1 for success in calendar_results.values() if success)
+                if is_multi_account:
+                    print("🔄 複数アカウントにイベントを登録します")
+                    calendar_results = self.calendar_manager.create_events_for_multiple_accounts(
+                        found_dates, event_title, event_description
+                    )
+                    # 複数アカウントの結果を集計
+                    success_count = 0
+                    for account_results in calendar_results.values():
+                        if isinstance(account_results, dict) and 'error' not in account_results:
+                            success_count += sum(1 for result in account_results.values() if result['status'] == 'created')
+                else:
+                    # シングルアカウントモード: 有効なアカウントの設定を使用
+                    if enabled_accounts:
+                        single_account_key = list(enabled_accounts.keys())[0]
+                        single_account_config = enabled_accounts[single_account_key]
+                        print(f"🔄 シングルアカウント ({single_account_config['name']}) にイベントを登録します")
+                        single_manager = GoogleCalendarManager(
+                            credentials_file=single_account_config['credentials_file'],
+                            token_file=single_account_config['token_file'],
+                            calendar_id=single_account_config['calendar_id']
+                        )
+                        if single_manager.authenticate():
+                            calendar_results = single_manager.create_multiple_events(
+                                found_dates, event_title, event_description
+                            )
+                        else:
+                            calendar_results = {date: {'status': 'error', 'event_id': None, 'message': '認証失敗'} for date in found_dates}
+                    else:
+                        # フォールバック（通常発生しない）
+                        if self.calendar_manager.authenticate():
+                            calendar_results = self.calendar_manager.create_multiple_events(
+                                found_dates, event_title, event_description
+                            )
+                        else:
+                            calendar_results = {date: {'status': 'error', 'event_id': None, 'message': '認証失敗'} for date in found_dates}
+                    success_count = sum(1 for result in calendar_results.values() if result['status'] == 'created')
 
                 if success_count > 0:
                     print(f"✓ カレンダー登録完了: {success_count}/{len(found_dates)}件成功")
