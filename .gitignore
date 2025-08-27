@@ -2,12 +2,28 @@
 credentials.json
 token.json
 
+# 拡張: 複数の認証・トークンファイルを無視
+credentials*.json
+token*.json
+token copy.json
+token_*.json
+credentials_*.json
+credentials2.json
+credentials3.json
+credentials4.json
+token_gmail.json
+token_gmail.json.bak
+token2.json
+token3.json
+token4.json
 # 設定ファイル（APIキーなどが含まれる可能性がある）
 config.yaml
 
 # ワークフロー結果ファイル
 workflow_results_*.json
 
+# OneDrive 監視で出る処理済みログ（ローカルのみ管理）
+**/processed_files.json
 # Pythonキャッシュファイル
 __pycache__/
 *.pyc
@@ -33,6 +49,9 @@ Thumbs.db
 # 環境変数ファイル
 .env
 .env.local
+
+# pip / build キャッシュ
+pip-wheel-metadata/
 
 # テンポラリファイル
 *.tmp
