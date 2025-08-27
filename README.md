@@ -21,12 +21,12 @@
 - 重複チェック機能
 - 複数日付の一括登録
 
-### 3. 統合ワークフロー
-- 画像解析からカレンダー登録まで完全自動化
-- エラーハンドリング機能（リトライ処理付き）
-- ドライランモード対応
-- 詳細なログ出力
-- Windowsファイルエクスプローラー統合
+### 4. OneDrive自動監視機能（NEW!）
+- 指定フォルダを定期的に監視
+- 新しい画像ファイルが追加されると自動処理
+- 処理済みファイルの追跡
+- Windowsタスクスケジューラー連携
+- 重複登録防止機能
 
 ## システム構成
 
@@ -35,15 +35,18 @@
 ├── ai_calendar_analyzer.py      # AI画像認識モジュール
 ├── google_calendar_manager.py   # Google Calendar API連携モジュール
 ├── integrated_workflow.py       # 統合ワークフロー
+├── onedrive_monitor.py          # OneDriveフォルダ監視スクリプト
 ├── config_loader.py             # 設定ファイルローダー
 ├── config.yaml                  # 設定ファイル
+├── run_monitor.bat              # 監視スクリプト実行バッチファイル
 ├── requirements.txt             # 依存関係定義ファイル
 ├── setup_instructions.md        # セットアップ手順書
 ├── README.md                    # このファイル
 └── 実行結果/
     ├── ai_analysis_results.json     # AI解析結果
     ├── den_dates.txt               # 検出された日付リスト
-    └── workflow_results_*.json     # ワークフロー実行結果
+    ├── workflow_results_*.json     # ワークフロー実行結果
+    └── processed_files.json        # 処理済みファイル追跡ログ
 ```
 
 ## 使用方法
@@ -78,9 +81,65 @@ python ai_calendar_analyzer.py
    - 検出された日付をGoogleカレンダーに終日イベントとして登録
    - 設定は `config.yaml` ファイルから読み込まれ、環境変数で上書き可能
 
-### コマンドライン引数
+### OneDrive自動監視機能
 
-- `--dry-run`: テストモード（実際のカレンダー登録を行わず、検出結果のみ表示）
+OneDrive上の指定フォルダを定期的に監視し、新しい画像ファイルが追加されると自動で処理を行う機能です。
+
+#### 設定方法
+
+1. **config.yamlに監視フォルダを設定**
+   ```yaml
+   workflow:
+     monitor_path: "C:/Users/ユーザー名/OneDrive/監視フォルダ"
+   ```
+
+2. **監視スクリプト実行**
+   ```bash
+   # 初回チェックのみ
+   python onedrive_monitor.py
+
+   # 連続監視モード（Ctrl+Cで停止）
+   python onedrive_monitor.py
+   ```
+
+3. **Windowsタスクスケジューラーでの定期実行**
+   ```bash
+   # バッチファイルを使用
+   run_monitor.bat
+   ```
+
+#### Windowsタスクスケジューラー設定
+
+1. **タスクスケジューラーを開く**
+   - Windows検索で「タスクスケジューラー」を検索
+   - 「タスクスケジューラー」を開く
+
+2. **新しいタスクを作成**
+   - 「操作」→「タスクの作成」
+   - 名前: 「カレンダー画像監視」
+   - 「最上位の特権で実行する」をチェック
+
+3. **トリガーを設定**
+   - 「トリガー」タブ→「新規」
+   - 開始: 「ログオン時」
+   - または「毎日」などで定期実行を設定
+
+4. **操作を設定**
+   - 「操作」タブ→「新規」
+   - 操作: 「プログラムの開始」
+   - プログラム/スクリプト: `C:\Users\ユーザー名\Develop\work\okaasama\run_monitor.bat`
+   - 開始: プロジェクトフォルダのパス
+
+5. **完了**
+   - 「OK」をクリックして保存
+
+#### 監視機能の特徴
+
+- **自動検知**: 新しい画像ファイル（JPG, PNG, BMP, GIF）を自動検知
+- **重複防止**: 処理済みファイルを追跡し、重複処理を防止
+- **ログ記録**: 処理結果を `processed_files.json` に保存
+- **エラーハンドリング**: 処理エラー時も継続監視
+- **柔軟な間隔**: チェック間隔をカスタマイズ可能（デフォルト5分）
 
 ### 設定ファイル
 
@@ -88,9 +147,9 @@ python ai_calendar_analyzer.py
 
 ```yaml
 openai:
-  api_key: "your-openai-api-key"
-  api_base: ""
-  model: "gpt-4o-mini"
+  api_key: "your-openai-api-key"  # 環境変数 OPENAI_API_KEY を使用
+  api_base: ""  # 環境変数 OPENAI_API_BASE を使用（オプション）
+  model: "gpt-4o-mini"  # 使用するモデル
   max_image_size_kb: 256  # 画像圧縮時の最大ファイルサイズ（KB）
 
 google_calendar:
@@ -98,11 +157,10 @@ google_calendar:
   token_file: "token.json"
 
 workflow:
-  event_title: "カレンダーイベント"
-  event_description: "画像から検出した日付"
-  target_year: null  # nullの場合は当年
-  target_month: null  # nullの場合は当月
-  dry_run: false
+  event_title: "母出勤"  # 登録するイベントのタイトル
+  event_description: "カレンダー画像から自動検出された勤務日"  # イベントの説明
+  dry_run: false  # ドライランモード（デフォルト: false）
+  monitor_path: "C:/Users/ユーザー名/OneDrive/監視フォルダ"  # OneDrive監視フォルダのパス（オプション）
 ```
 
 ### 環境変数での設定
@@ -110,10 +168,10 @@ workflow:
 環境変数で設定を上書きできます：
 
 ```bash
-export OPENAI_API_KEY="your-key"
+export OPENAI_API_KEY="your-openai-api-key"
+export OPENAI_API_BASE="your-api-base-url"  # オプション
 export GOOGLE_CALENDAR_CREDENTIALS_PATH="path/to/credentials.json"
-export WORKFLOW_TARGET_YEAR=2024
-export WORKFLOW_TARGET_MONTH=12
+export WORKFLOW_MONITOR_PATH="C:/Users/ユーザー名/OneDrive/監視フォルダ"  # オプション
 ```
 
 ## 実行結果例

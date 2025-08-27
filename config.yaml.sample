@@ -22,6 +22,7 @@ workflow:
   event_title: "母出勤"  # 登録するイベントのタイトル
   event_description: "カレンダー画像から自動検出された勤務日"  # イベントの説明
   dry_run: false  # ドライランモード（デフォルト: false）
+  monitor_path: "C:/Users/ユーザー名/OneDrive/監視フォルダ"  # OneDrive監視フォルダのパス（オプション）
 
 logging:
   level: "INFO"  # ログレベル（DEBUG, INFO, WARNING, ERROR）

@@ -58,7 +58,8 @@ class ConfigLoader:
             'workflow': {
                 'event_title': '母出勤',
                 'event_description': 'カレンダー画像から自動検出された勤務日',
-                'dry_run': False
+                'dry_run': False,
+                'monitor_path': ''
             },
             'logging': {
                 'level': 'INFO',
