@@ -2,161 +2,117 @@
 
 ## 概要
 
-このシステムは、カレンダーの写真から特定の文字（「田」）を自動検出し、該当する日付をGoogleカレンダーに終日スケジュールとして自動登録するワークフローです。複数画像の同時処理に対応し、Windowsのファイルエクスプローラーで簡単に画像を選択できます。
+このシステムは、カレンダーの写真から特定の文字（「田」）を自動検出し、該当する日付をGoogleカレンダーに終日スケジュールとして自動登録するワークフローです。OneDriveの監視フォルダと連携して自動実行できます。
 
-## 主な機能
+## 主要変更点（このリポジトリの現在の状態）
+- HEIC形式の画像をサポート（`pillow-heif` を利用）
+- マルチアカウント対応（`config.yaml` の `google_calendar.accounts` に個別の `enabled` フラグ）
+- OneDrive監視機能の改善：バッチ起動時は1回実行して終了（`--once`）、タスクスケジューラー向けに `run_monitor.bat` を更新
+- `monitor_path` に環境変数（例: `%USERNAME%`）を使えるように変更
+- 生成結果や処理済みファイルは `processed_files.json` に保存され、重複処理を防止
 
-### 1. AI画像認識による文字検出
-- ChatGPT-4o-miniを使用した高精度な画像解析
-# カレンダー画像自動登録システム
-
-## 概要
-
-カレンダーの写真から手書きや印刷の記号（例：「田」）を自動検出し、検出した日付をGoogleカレンダーへ終日イベントとして登録するワークフローです。
-
-OneDrive上のフォルダを監視して自動処理する運用を想定し、マルチアカウント、HEIC対応、Gmail通知など実運用を意識した機能を備えています。
-
-## 主な機能
-
-- AI画像認識による手書き・印刷文字の検出（OpenAI API）
-- 画像圧縮（最大サイズを設定可能）
-- 終日イベントの自動登録（Google Calendar API）
-- マルチアカウント対応（`config.yaml` の `google_calendar.accounts`）
-- OneDriveフォルダ監視（`onedrive_monitor.py`）と `--once` モード
-- HEIC画像対応（`pillow-heif` を用いて PIL に統合）
-- Gmail 通知（OAuth2 クレデンシャル + token を使用、Gmail API 経由）
-- 重複処理防止（`processed_files.json`）
-
-## 主なファイル
-
+## 内容（ファイル構成）
 ```
-okaasama/
-├── ai_calendar_analyzer.py       # 画像解析（HEIC対応）
-├── google_calendar_manager.py    # Google Calendar API 操作
-├── integrated_workflow.py        # 画像→解析→登録の統合フロー
-├── onedrive_monitor.py           # OneDrive 監視スクリプト（--once をサポート）
-├── gmail_notifier.py             # Gmail 通知（OAuth2 + Gmail API）
-├── config_loader.py              # 設定ローダー（環境変数展開、accounts 対応）
-├── config.yaml                   # 設定ファイルテンプレート
-├── token*.json / credentials*.json# OAuth トークン・クレデンシャル
-├── processed_files.json          # 処理済みファイルの追跡
-├── test_gmail_send.py            # Gmail 通知テスト
-├── test_send_email.py            # ローカル SMTP デバッグ用（任意）
-├── run_monitor.bat               # タスクスケジューラーで利用するバッチ
-└── requirements.txt
+カレンダー画像自動登録システム/
+├── ai_calendar_analyzer.py      # AI画像認識モジュール（HEIC対応）
+├── google_calendar_manager.py   # Google Calendar API連携モジュール（マルチアカウント）
+├── integrated_workflow.py       # 統合ワークフロー
+├── onedrive_monitor.py          # OneDriveフォルダ監視スクリプト（--once/連続監視対応）
+├── config_loader.py             # 設定ファイルローダー（環境変数展開対応）
+├── config.yaml                  # 設定ファイル（例を参照）
+├── run_monitor.bat              # 監視スクリプト実行バッチ（タスクスケジューラー用）
+├── requirements.txt             # 依存関係（pillow-heif 追記済み）
+└── お母様カレンダー/             # テスト用画像等
+    └── processed_files.json     # 監視で処理済みファイルを記録
 ```
 
-## クイックスタート
+## 依存関係
+requirements.txt に主要ライブラリを列挙しています。主なもの:
+- openai
+- google-api-python-client
+- google-auth-oauthlib
+- tenacity
+- Pillow
+- pillow-heif  ← HEIC対応に必要
 
-1. 依存関係をインストール:
+インストール:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-2. `config.yaml` を編集して、OneDrive の監視フォルダや Google/Gmail の設定を入力します。
-
-3. Google API 用のクレデンシャルを用意:
-    - Google Cloud Console でプロジェクト作成 → Calendar API と Gmail API を有効化
-    - OAuth 同意画面の設定 → OAuth クライアントを作成
-    - `credentials.json`（または `credentials_<account>.json`）をプロジェクトに配置
-
-4. Gmail 通知の設定:
-    - `config.yaml` の `gmail.credentials_file` と `gmail.token_file` を設定
-    - 初回実行時にブラウザで OAuth 同意が必要（token が生成されます）
-
-5. 動作確認: One-shot 実行
-
-```powershell
-& C:/Users/taxa/AppData/Local/Programs/Python/Python313/python.exe c:/Users/taxa/OneDrive/Develop/work/okaasama/onedrive_monitor.py --once
-
-# または統合ワークフローを手動実行
-& C:/Users/taxa/AppData/Local/Programs/Python/Python313/python.exe c:/Users/taxa/OneDrive/Develop/work/okaasama/integrated_workflow.py
-```
-
-## 設定例（`config.yaml`）
+## 設定（`config.yaml` の要点）
+- `openai`：OpenAI APIキーなど
+- `google_calendar.accounts`：複数アカウント定義（例は最大4アカウント）
+  - 各アカウントに `enabled: true/false` を設定して使用するアカウントを制御
+  - 例:
 
 ```yaml
-openai:
-   api_key: ""  # 環境変数 OPENAI_API_KEY でも可
-   api_base: ""
-   model: "gpt-4o-mini"
-   max_image_size_kb: 256
-
 google_calendar:
-   accounts:
-      account1:
-         enabled: true
-         name: "jun"
-         credentials_file: "credentials.json"
-         token_file: "token.json"
-         calendar_id: "primary"
-         email: "jun@taxa.jp"
+  accounts:
+    account1:
+      enabled: false
+      name: "jun"
+      credentials_file: "credentials.json"
+      token_file: "token.json"
+      calendar_id: "primary"
 
-      account2:
-         enabled: true
-         name: "midori"
-         credentials_file: "credentials2.json"
-         token_file: "token2.json"
-         calendar_id: "primary"
-         email: "midori@taxa.jp"
-
-gmail:
-   enabled: true
-   credentials_file: "credentials_gmail.json"
-   token_file: "token_gmail.json"
-   from_email: "your-gmail@gmail.com"
-
-workflow:
-   event_title: "出勤"
-   event_description: "カレンダー画像から自動検出された勤務日"
-   dry_run: false
-   monitor_path: "C:/Users/%USERNAME%/OneDrive/Develop/work/okaasama/お母様カレンダー"
-
-logging:
-   level: "INFO"
-   format: "%(asctime)s - %(levelname)s - %(message)s"
+    account2:
+      enabled: true
+      name: "midori"
+      credentials_file: "credentials2.json"
+      token_file: "token2.json"
+      calendar_id: "primary"
 ```
 
-## テスト
+- `workflow.monitor_path`：OneDrive監視フォルダ
+  - `%USERNAME%` やその他の環境変数を使用可能（`config_loader` が `os.path.expandvars` で展開）
+  - 例: `C:/Users/%USERNAME%/OneDrive/Develop/work/okaasama/お母様カレンダー`
 
-- Gmail 通知の単体テスト:
+- `workflow.dry_run`: テスト用に実際のカレンダー登録をスキップするモード
 
-```powershell
-& C:/Users/taxa/AppData/Local/Programs/Python/Python313/python.exe c:/Users/taxa/OneDrive/Develop/work/okaasama/test_gmail_send.py
-```
+## マルチアカウント動作
+- `config_loader.get_google_calendar_accounts_config()` は `enabled: true` のアカウントのみを返します。
+- ワークフローは有効なアカウント数に基づいて自動で「シングル」または「マルチ」モードを選択します。
+  - 有効アカウントが1件: そのアカウントの `credentials_file` / `token_file` を使って登録
+  - 複数件: 全ての有効アカウントに対して登録処理を試行
 
-- ローカル SMTP デバッグ（オプション）:
+## OneDrive監視（`onedrive_monitor.py`）
+- 実行オプション:
+  - `--once` : 1回チェックして終了（タスクスケジューラー向け）
+  - オプション無し: 連続監視（デフォルト）
+- `run_monitor.bat` はタスクスケジューラー用に `--once` を渡すように更新され、バッチ内で UTF-8 (chcp 65001) を設定します。
 
-```powershell
-# 別ウィンドウでデバッグSMTPサーバを起動
-python -m smtpd -c DebuggingServer -n localhost:1025
-# 別ターミナルで test_send_email.py を実行
-& C:/Users/taxa/AppData/Local/Programs/Python/Python313/python.exe c:/Users/taxa/OneDrive/Develop/work/okaasama/test_send_email.py
-```
+## processed_files.json の役割
+- 処理済みファイル（MD5ハッシュ）をキーに、処理日時・処理結果・ファイルパスを保存します。
+- これにより同じファイルを再処理せず、重複登録を防止します。
 
-## トラブルシュート
+## 使用手順まとめ
+1. 依存ライブラリをインストール
+   ```powershell
+   pip install -r requirements.txt
+   ```
+2. `config.yaml` を編集して `openai.api_key` と `google_calendar.accounts` を設定
+3. Google Calendar API の `credentials.json` 等を用意
+4. 動作確認（ダイアログで画像を選択）
+   ```powershell
+   python integrated_workflow.py --dry-run
+   ```
+5. OneDrive監視をスケジューラーで動かす
+   - タスクの操作に `run_monitor.bat` を指定（`--once` が付くため1回で終了）
 
-- Pylance で `setup_logging` の警告が出る場合は `config_loader.py` を最新にする（本リポジトリでは修正済み）
-- Gmail 認証で `invalid_scope` が出る場合は `config.yaml` の `gmail.credentials_file` と `gmail.token_file` を確認し、`SCOPES` がトークンと一致しているかを確認してください
-- HEIC が読み込めない場合は `pillow-heif` をインストールしていることを確認してください
+## トラブルシューティング
+- Google認証エラー: `credentials.json` と `token*.json` の組み合わせを確認し、必要なら再認証を行ってください（スクリプト起動時にブラウザ認証が発生します）。
+- HEICが開けない場合: `pillow-heif` がインストールされているか確認。
+- 監視フォルダが見つからない場合: `workflow.monitor_path` の展開後のパスを確認。
+- 文字化けする場合: バッチファイルで `chcp 65001` を有効にしているか確認。
 
-## 開発ノート
+## 追加情報・今後の改善
+- より細かいログ出力や通知（メール/Slack）連携の追加
+- 文字検出アルゴリズムの拡張（「田」以外の記号や手法）
+- Web UIによる運用管理
 
-- マルチアカウントは `config.yaml` の `google_calendar.accounts` 内の `enabled: true` フラグで自動検出されます
-- 既存の `multi_account_enabled` フラグは廃止し、enabled アカウント数で自動判定します
-- `processed_files.json` を削除/変更すると既存の重複チェック挙動が変わります。バックアップしてください
+---
 
-## ライセンス
-
-個人利用・教育目的での使用を想定しています。商用利用の場合は各APIの利用規約を確認してください。
-
-## サポート
-
-問題がある場合は、以下を確認してください：
-
-- `setup_instructions.md`: セットアップ手順
-- ログファイル: 実行時に出力される詳細なログ
-- 結果ファイル: JSON 形式の実行結果
-  dry_run: false  # ドライランモード（デフォルト: false）
+必要なら、READMEにさらに詳しいセットアップ手順（Google Cloud側のスクリーンショット付き）や、Windowsタスクスケジューラーの具体的な設定手順を追加します。
 
