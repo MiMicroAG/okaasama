@@ -1,6 +1,22 @@
+# 画像ファイル（GitHubにアップロードしない）
+*.heic
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.svg
+
 # 認証情報ファイル（GitHubにアップロードしない）
 credentials.json
+credentials2.json
 token.json
+token2.json
+token_gmail.json
+token_gmail.json.bak
+token copy.json
 
 # 設定ファイル（APIキーなどが含まれる可能性がある）
 config.yaml
