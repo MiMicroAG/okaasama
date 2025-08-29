@@ -41,12 +41,6 @@ requirements.txt に主要ライブラリを列挙しています。主なもの
 - pillow-heif  ← HEIC対応に必要
 - email.mime.text  ← Gmail通知機能に必要
 
-インストール:
-
-```powershell
-pip install -r requirements.txt
-```
-
 ## 設定（`config.yaml` の要点）
 - `openai`：OpenAI APIキーなど
 - `gmail`：Gmail通知機能の設定
@@ -114,35 +108,6 @@ google_calendar:
 - 処理済みファイル（MD5ハッシュ）をキーに、処理日時・処理結果・ファイルパスを保存します。
 - これにより同じファイルを再処理せず、重複登録を防止します。
 
-## 使用手順まとめ
-1. 依存ライブラリをインストール
-   ```powershell
-   pip install -r requirements.txt
-   ```
-2. `config.yaml` を編集して `openai.api_key` と `google_calendar.accounts` を設定
-3. Google Calendar API の `credentials.json` 等を用意
-4. Gmail通知を使用する場合、`gmail` セクションも設定
-5. 動作確認（ダイアログで画像を選択）
-   ```powershell
-   python integrated_workflow.py --dry-run
-   ```
-6. Gmail通知機能をテスト
-   ```powershell
-   python test_gmail_notification.py
-   ```
-7. OneDrive監視をスケジューラーで動かす
-   - タスクの操作に `run_monitor.bat` を指定（`--once` が付くため1回で終了）
-
-## トラブルシューティング
-- Google認証エラー: `credentials.json` と `token*.json` の組み合わせを確認し、必要なら再認証を行ってください（スクリプト起動時にブラウザ認証が発生します）。
-- HEICが開けない場合: `pillow-heif` がインストールされているか確認。
-- 監視フォルダが見つからない場合: `workflow.monitor_path` の展開後のパスを確認。
-- 文字化けする場合: バッチファイルで `chcp 65001` を有効にしているか確認。
-- Gmail通知が送信されない場合: 
-  - `config.yaml` の `gmail.enabled` が `true` になっているか確認
-  - `token_gmail.json` が存在し、有効なトークンが含まれているか確認
-  - Gmail APIのスコープが正しく設定されているか確認
-
 ## 追加情報・今後の改善
 - より細かいログ出力や通知（メール/Slack）連携の追加
 - 文字検出アルゴリズムの拡張（「田」以外の記号や手法）
@@ -150,5 +115,5 @@ google_calendar:
 
 ---
 
-必要なら、READMEにさらに詳しいセットアップ手順（Google Cloud側のスクリーンショット付き）や、Windowsタスクスケジューラーの具体的な設定手順を追加します。
+**セットアップ手順の詳細については `SETUP.md` を参照してください。**
 

@@ -143,10 +143,13 @@ class OneDriveFolderMonitor:
         image_paths = [str(path) for path in unprocessed_images]
 
         try:
-            # ワークフロー実行
+            # ワークフロー実行（configからdry_run設定を読み込む）
+            workflow_config = config_loader.get_workflow_config()
+            dry_run = workflow_config.get('dry_run', False)
+            
             result = self.workflow.run_complete_workflow(
                 image_paths=image_paths,
-                dry_run=False  # 自動実行時は常に本番モード
+                dry_run=dry_run
             )
 
             # 処理済みとしてマーク

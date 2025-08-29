@@ -208,8 +208,10 @@ class IntegratedCalendarWorkflow:
         try:
             gmail_notifier = GmailNotifier()
             for account_key, account_config in enabled_accounts.items():
-                email = account_config.get('email')
+                # アカウント設定からメールアドレスを取得、なければデフォルトを使用
+                email = account_config.get('email') or gmail_notifier.default_recipient
                 if not email:
+                    print(f"⚠ アカウント {account_config['name']} のメールアドレスが設定されていないため、通知をスキップします")
                     continue
                 if is_multi_account:
                     account_results = calendar_results.get(account_key, {})

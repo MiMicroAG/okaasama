@@ -19,8 +19,17 @@ if %ERRORLEVEL% EQU 0 (
     echo 監視スクリプトが正常に完了しました
 ) else (
     echo 監視スクリプトでエラーが発生しました
-    exit /b %ERRORLEVEL%
+    echo エラーコード: %ERRORLEVEL%
 )
 
 echo %DATE% %TIME%
 echo 完了
+
+REM タスクスケジューラー実行時のために、強制終了を追加
+if "%SESSIONNAME%"=="Console" (
+    REM コンソールからの実行時は通常のexit
+    exit
+) else (
+    REM タスクスケジューラーからの実行時はcmd /cで強制終了
+    cmd /c exit
+)
