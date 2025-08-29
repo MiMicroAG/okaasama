@@ -141,8 +141,7 @@ class ConfigLoader:
                     'name': account_config.get('name', account_key),
                     'credentials_file': account_config.get('credentials_file', f'credentials_{account_key}.json'),
                     'token_file': account_config.get('token_file', f'token_{account_key}.json'),
-                    'calendar_id': account_config.get('calendar_id', 'primary'),
-                    'email': account_config.get('email', '')
+                    'calendar_id': account_config.get('calendar_id', 'primary')
                 }
         
         print(f"デバッグ: 有効化されたアカウント: {enabled_accounts}")
@@ -190,18 +189,20 @@ class ConfigLoader:
             'monitor_path': monitor_path
         }
     
-    def get_gmail_config(self) -> Dict[str, str]:
+    def get_gmail_config(self) -> Dict[str, Any]:
         """
         Gmail設定を取得
         
         Returns:
-            Dict[str, str]: Gmail設定
+            Dict[str, Any]: Gmail設定
         """
         return {
-            'enabled': str(self.get('gmail.enabled', False)),
+            'enabled': self.get('gmail.enabled', False),
             'credentials_file': self.get('gmail.credentials_file', 'credentials_gmail.json'),
             'token_file': self.get('gmail.token_file', 'token_gmail.json'),
-            'from_email': self.get('gmail.from_email', '')
+            'from_email': self.get('gmail.from_email', ''),
+            'default_recipient': self.get('gmail.default_recipient', ''),
+            'default_subject': self.get('gmail.default_subject', 'カレンダー自動登録通知')
         }
     
     def get_logging_config(self) -> Dict[str, str]:
@@ -215,18 +216,17 @@ class ConfigLoader:
             'level': self.get('logging.level', 'INFO'),
             'format': self.get('logging.format', '%(asctime)s - %(levelname)s - %(message)s')
         }
-
+    
     def setup_logging(self):
         """
-        ログ設定を適用（互換性のためのラッパー）
+        ログ設定を適用
         """
         log_config = self.get_logging_config()
-        level = getattr(logging, str(log_config.get('level', 'INFO')).upper(), logging.INFO)
-        format_str = log_config.get('format', '%(asctime)s - %(levelname)s - %(message)s')
-
-        # 基本的なログ設定を行う（既に設定済みでも問題ない）
+        level = getattr(logging, log_config['level'].upper(), logging.INFO)
+        format_str = log_config['format']
+        
         logging.basicConfig(level=level, format=format_str)
-        print(f"ログレベルを設定しました: {log_config.get('level', 'INFO')}")
+        print(f"ログレベルを設定しました: {log_config['level']}")
 
 # グローバル設定ローダーインスタンス
 config_loader = ConfigLoader()

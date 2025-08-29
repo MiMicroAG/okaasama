@@ -1,0 +1,685 @@
+{
+  "8008755186aec1dc62f2006d963e5dc9": {
+    "file_path": "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050835314_iOS.heic",
+    "file_name": "20250823_050835314_iOS.heic",
+    "processed_at": "2025-08-27T23:07:43.215552",
+    "result": {
+      "success": true,
+      "execution_time": 66.346707,
+      "image_paths": [
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050835314_iOS.heic",
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050842584_iOS.heic"
+      ],
+      "event_title": "出勤",
+      "event_description": "カレンダー画像から自動検出された勤務日",
+      "dry_run": false,
+      "ai_analysis_results": [
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2025,\n    \"detected_month\": 10,\n    \"year_month_text\": \"2025 10\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"中央上部\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 2,\n      \"confidence\": \"high\",\n      \"description\": \"手書きで「田」と明確に書かれている（右斜めの線や四角の枠がわかる）\",\n      \"location\": \"日付セル中央右側\"\n    },\n    {\n      \"day\": 3,\n      \"confidence\": \"medium\",\n      \"description\": \"手書きの文字だが「田」に似た形状（四角形の枠がやや崩れている）\",\n      \"location\": \"日付セル中央右側\"\n    },\n    {\n      \"day\": 6,\n      \"confidence\": \"high\",\n      \"description\": \"明瞭な「田」の手書き。中央十字線、四角い枠が視認可能\",\n      \"location\": \"日付セル中央やや右\"\n    },\n    {\n      \"day\": 9,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」がはっきり書かれている\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 10,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」が明確に認識可能\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 13,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」がはっきりしている（日付文字横に小さく書き込みあり）\",\n      \"location\": \"黄色の日付セル中央部分\"\n    },\n    {\n      \"day\": 16,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりとした「田」手書き文字。細部確認可能\",\n      \"location\": \"ピンク帯付近の日付中央右\"\n    },\n    {\n      \"day\": 17,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」文字はっきり確認\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 21,\n      \"confidence\": \"high\",\n      \"description\": \"明瞭な「田」手書きあり\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 22,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」が鮮明に書かれている\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 25,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりと「田」と認識できる手書き文字\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 29,\n      \"confidence\": \"high\",\n      \"description\": \"手書き「田」はっきり判別可能\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 30,\n      \"confidence\": \"high\",\n      \"description\": \"明確な手書き「田」\",\n      \"location\": \"日付セル中央右\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 31,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2025年10月\",\n    \"notes\": \"カレンダー画像上部中央に「2025」と「10」(October)があり高精度で年月を特定。手書き「田」文字は17日分確認。背景グレー・薄文字や前後月日付セルは除外。\"\n  }\n}",
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2025,\n    \"detected_month\": 11,\n    \"year_month_text\": \"2025 November\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"カレンダー中央上部の大きな数字の右側\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 3,\n      \"confidence\": \"high\",\n      \"description\": \"手書きで朱色のインクで書かれた「田」。中央に十字線があり、上下左右の枠が明瞭に確認できる。\",\n      \"location\": \"3日のセル内、数字の右隣\"\n    },\n    {\n      \"day\": 6,\n      \"confidence\": \"high\",\n      \"description\": \"手書き黒インクの「田」。形状は明確で、特徴的な十字線と四角い枠が揃っている。\",\n      \"location\": \"6日のセル内、数字の右隣\"\n    },\n    {\n      \"day\": 7,\n      \"confidence\": \"high\",\n      \"description\": \"手書き黒インクの「田」。形状、十字線、枠の構成がしっかりしている。\",\n      \"location\": \"7日のセル内、数字右横\"\n    },\n    {\n      \"day\": 12,\n      \"confidence\": \"medium\",\n      \"description\": \"手書きの「田」に似た文字。多少枠や線が途切れているが、全体の形状は「田」に近い。\",\n      \"location\": \"12日のセル内、数字右隣\"\n    },\n    {\n      \"day\": 14,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」。中央十字線と上下左右の四角い枠が揃っている。\",\n      \"location\": \"14日のセル内、数字の横\"\n    },\n    {\n      \"day\": 3,\n      \"confidence\": \"medium\",\n      \"description\": \"3日のセルに朱色で書かれた別の「田」一部接続が弱いが形状から判断。\",\n      \"location\": \"3日のセルの左側中央近辺\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 30,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2025年11月（英語表記：November）\",\n    \"notes\": \"カレンダー中央上部から2025年11月の年月情報を高確度で認識。11月の周囲にある前後月は薄くグレー表示で除外。白地の11月の日付セルは手書き文字分析で「田」を多数検出。手書きインクの色は黒と朱色で判別可能。\"\n  }\n}"
+      ],
+      "found_dates": [
+        "2025-10-02",
+        "2025-10-03",
+        "2025-10-06",
+        "2025-10-09",
+        "2025-10-10",
+        "2025-10-13",
+        "2025-10-16",
+        "2025-10-17",
+        "2025-10-21",
+        "2025-10-22",
+        "2025-10-25",
+        "2025-10-29",
+        "2025-10-30",
+        "2025-11-03",
+        "2025-11-06",
+        "2025-11-07",
+        "2025-11-12",
+        "2025-11-14"
+      ],
+      "dates_count": 18,
+      "calendar_results": {
+        "account1": {
+          "2025-10-02": {
+            "status": "created",
+            "event_id": "arft8voocg8i0afr303p1fp9ls",
+            "message": "イベントが作成されました: 出勤 (2025-10-02)"
+          },
+          "2025-10-03": {
+            "status": "created",
+            "event_id": "h31kecdlcnjn34j31av5vs1sa8",
+            "message": "イベントが作成されました: 出勤 (2025-10-03)"
+          },
+          "2025-10-06": {
+            "status": "created",
+            "event_id": "ko2i3reb1419fuhn8b3ocebhe8",
+            "message": "イベントが作成されました: 出勤 (2025-10-06)"
+          },
+          "2025-10-09": {
+            "status": "created",
+            "event_id": "tfemfe9p89bn1btembjttca8h4",
+            "message": "イベントが作成されました: 出勤 (2025-10-09)"
+          },
+          "2025-10-10": {
+            "status": "created",
+            "event_id": "ilhu1bu302gr59srcqvtdmt38g",
+            "message": "イベントが作成されました: 出勤 (2025-10-10)"
+          },
+          "2025-10-13": {
+            "status": "created",
+            "event_id": "vi34g3qlkjr4pgjjv0acppj7u4",
+            "message": "イベントが作成されました: 出勤 (2025-10-13)"
+          },
+          "2025-10-16": {
+            "status": "created",
+            "event_id": "kkffs7mrdf2p6l1rkrkal3s83c",
+            "message": "イベントが作成されました: 出勤 (2025-10-16)"
+          },
+          "2025-10-17": {
+            "status": "created",
+            "event_id": "bealuqgc1qio2g9dog5sv2ijlk",
+            "message": "イベントが作成されました: 出勤 (2025-10-17)"
+          },
+          "2025-10-21": {
+            "status": "created",
+            "event_id": "k7ibbg1b6m51mck3g9478e15og",
+            "message": "イベントが作成されました: 出勤 (2025-10-21)"
+          },
+          "2025-10-22": {
+            "status": "created",
+            "event_id": "9tgk3rd1fbkodt4pet1nsfhloo",
+            "message": "イベントが作成されました: 出勤 (2025-10-22)"
+          },
+          "2025-10-25": {
+            "status": "created",
+            "event_id": "l474hpq2e81155qd2hikgnhobg",
+            "message": "イベントが作成されました: 出勤 (2025-10-25)"
+          },
+          "2025-10-29": {
+            "status": "created",
+            "event_id": "egqc4mt5catilkrubtobiu0nso",
+            "message": "イベントが作成されました: 出勤 (2025-10-29)"
+          },
+          "2025-10-30": {
+            "status": "created",
+            "event_id": "0iqo1sqqatugdba8l9udjmoqt0",
+            "message": "イベントが作成されました: 出勤 (2025-10-30)"
+          },
+          "2025-11-03": {
+            "status": "created",
+            "event_id": "iep6fv9h6dje211q0apgcouits",
+            "message": "イベントが作成されました: 出勤 (2025-11-03)"
+          },
+          "2025-11-06": {
+            "status": "created",
+            "event_id": "fqjskun8b5kq88tfnrnkmbeo94",
+            "message": "イベントが作成されました: 出勤 (2025-11-06)"
+          },
+          "2025-11-07": {
+            "status": "created",
+            "event_id": "lpmp93ak2rlag8lhlj568p5c30",
+            "message": "イベントが作成されました: 出勤 (2025-11-07)"
+          },
+          "2025-11-12": {
+            "status": "created",
+            "event_id": "a989odkkv497mju2jrfpbe7b5g",
+            "message": "イベントが作成されました: 出勤 (2025-11-12)"
+          },
+          "2025-11-14": {
+            "status": "created",
+            "event_id": "1b41sbbh29q5frfr0hfvpurh0g",
+            "message": "イベントが作成されました: 出勤 (2025-11-14)"
+          }
+        },
+        "account2": {
+          "2025-10-02": {
+            "status": "created",
+            "event_id": "fanqipqv9b3pkkgndcnqqpgskg",
+            "message": "イベントが作成されました: 出勤 (2025-10-02)"
+          },
+          "2025-10-03": {
+            "status": "created",
+            "event_id": "a1aleig1n36brk5p1otpm5j53k",
+            "message": "イベントが作成されました: 出勤 (2025-10-03)"
+          },
+          "2025-10-06": {
+            "status": "created",
+            "event_id": "32toovf0qv3v2c3setmf5dg87g",
+            "message": "イベントが作成されました: 出勤 (2025-10-06)"
+          },
+          "2025-10-09": {
+            "status": "created",
+            "event_id": "afg3lhnvs1o9o9gpj4u4j8ks2c",
+            "message": "イベントが作成されました: 出勤 (2025-10-09)"
+          },
+          "2025-10-10": {
+            "status": "created",
+            "event_id": "5e9deui2lp50d6d4oul251n2l4",
+            "message": "イベントが作成されました: 出勤 (2025-10-10)"
+          },
+          "2025-10-13": {
+            "status": "created",
+            "event_id": "hoobsm4jpfepji9kn5lme0e0so",
+            "message": "イベントが作成されました: 出勤 (2025-10-13)"
+          },
+          "2025-10-16": {
+            "status": "created",
+            "event_id": "fub72q9ihvm55l7a83hqvq4sjg",
+            "message": "イベントが作成されました: 出勤 (2025-10-16)"
+          },
+          "2025-10-17": {
+            "status": "created",
+            "event_id": "kmf6vmd8hne4ugviumgh32vi7k",
+            "message": "イベントが作成されました: 出勤 (2025-10-17)"
+          },
+          "2025-10-21": {
+            "status": "created",
+            "event_id": "puduubmn7vgrckcnutnjvsk410",
+            "message": "イベントが作成されました: 出勤 (2025-10-21)"
+          },
+          "2025-10-22": {
+            "status": "created",
+            "event_id": "d16u7gs622ht9mir17nm9els80",
+            "message": "イベントが作成されました: 出勤 (2025-10-22)"
+          },
+          "2025-10-25": {
+            "status": "created",
+            "event_id": "gj9l32745c437bbmavunloo3fo",
+            "message": "イベントが作成されました: 出勤 (2025-10-25)"
+          },
+          "2025-10-29": {
+            "status": "created",
+            "event_id": "7h3acr1r2u1grh90a2mflnqol8",
+            "message": "イベントが作成されました: 出勤 (2025-10-29)"
+          },
+          "2025-10-30": {
+            "status": "created",
+            "event_id": "mt0a6tdq1vivftiqogih08gq0o",
+            "message": "イベントが作成されました: 出勤 (2025-10-30)"
+          },
+          "2025-11-03": {
+            "status": "created",
+            "event_id": "i7km2ns48tl110vvik65b150fg",
+            "message": "イベントが作成されました: 出勤 (2025-11-03)"
+          },
+          "2025-11-06": {
+            "status": "created",
+            "event_id": "94kpkk296l40o5a0i69afmmt6o",
+            "message": "イベントが作成されました: 出勤 (2025-11-06)"
+          },
+          "2025-11-07": {
+            "status": "created",
+            "event_id": "kb9blvecurk7s0jiu817c55sm0",
+            "message": "イベントが作成されました: 出勤 (2025-11-07)"
+          },
+          "2025-11-12": {
+            "status": "created",
+            "event_id": "eid71m6t7gdrjhh9i2mc8uiiso",
+            "message": "イベントが作成されました: 出勤 (2025-11-12)"
+          },
+          "2025-11-14": {
+            "status": "created",
+            "event_id": "oqm60ca0h4305g7u68hrkfp910",
+            "message": "イベントが作成されました: 出勤 (2025-11-14)"
+          }
+        }
+      },
+      "success_count": 36,
+      "workflow_start_time": "2025-08-27T23:06:36.866675",
+      "workflow_end_time": "2025-08-27T23:07:43.213382"
+    }
+  },
+  "3cbaae3c2034c3de0bee80c03c61c614": {
+    "file_path": "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050842584_iOS.heic",
+    "file_name": "20250823_050842584_iOS.heic",
+    "processed_at": "2025-08-27T23:07:43.218233",
+    "result": {
+      "success": true,
+      "execution_time": 66.346707,
+      "image_paths": [
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050835314_iOS.heic",
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\20250823_050842584_iOS.heic"
+      ],
+      "event_title": "出勤",
+      "event_description": "カレンダー画像から自動検出された勤務日",
+      "dry_run": false,
+      "ai_analysis_results": [
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2025,\n    \"detected_month\": 10,\n    \"year_month_text\": \"2025 10\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"中央上部\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 2,\n      \"confidence\": \"high\",\n      \"description\": \"手書きで「田」と明確に書かれている（右斜めの線や四角の枠がわかる）\",\n      \"location\": \"日付セル中央右側\"\n    },\n    {\n      \"day\": 3,\n      \"confidence\": \"medium\",\n      \"description\": \"手書きの文字だが「田」に似た形状（四角形の枠がやや崩れている）\",\n      \"location\": \"日付セル中央右側\"\n    },\n    {\n      \"day\": 6,\n      \"confidence\": \"high\",\n      \"description\": \"明瞭な「田」の手書き。中央十字線、四角い枠が視認可能\",\n      \"location\": \"日付セル中央やや右\"\n    },\n    {\n      \"day\": 9,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」がはっきり書かれている\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 10,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」が明確に認識可能\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 13,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」がはっきりしている（日付文字横に小さく書き込みあり）\",\n      \"location\": \"黄色の日付セル中央部分\"\n    },\n    {\n      \"day\": 16,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりとした「田」手書き文字。細部確認可能\",\n      \"location\": \"ピンク帯付近の日付中央右\"\n    },\n    {\n      \"day\": 17,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」文字はっきり確認\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 21,\n      \"confidence\": \"high\",\n      \"description\": \"明瞭な「田」手書きあり\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 22,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」が鮮明に書かれている\",\n      \"location\": \"日付セル右側\"\n    },\n    {\n      \"day\": 25,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりと「田」と認識できる手書き文字\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 29,\n      \"confidence\": \"high\",\n      \"description\": \"手書き「田」はっきり判別可能\",\n      \"location\": \"日付セル中央右\"\n    },\n    {\n      \"day\": 30,\n      \"confidence\": \"high\",\n      \"description\": \"明確な手書き「田」\",\n      \"location\": \"日付セル中央右\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 31,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2025年10月\",\n    \"notes\": \"カレンダー画像上部中央に「2025」と「10」(October)があり高精度で年月を特定。手書き「田」文字は17日分確認。背景グレー・薄文字や前後月日付セルは除外。\"\n  }\n}",
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2025,\n    \"detected_month\": 11,\n    \"year_month_text\": \"2025 November\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"カレンダー中央上部の大きな数字の右側\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 3,\n      \"confidence\": \"high\",\n      \"description\": \"手書きで朱色のインクで書かれた「田」。中央に十字線があり、上下左右の枠が明瞭に確認できる。\",\n      \"location\": \"3日のセル内、数字の右隣\"\n    },\n    {\n      \"day\": 6,\n      \"confidence\": \"high\",\n      \"description\": \"手書き黒インクの「田」。形状は明確で、特徴的な十字線と四角い枠が揃っている。\",\n      \"location\": \"6日のセル内、数字の右隣\"\n    },\n    {\n      \"day\": 7,\n      \"confidence\": \"high\",\n      \"description\": \"手書き黒インクの「田」。形状、十字線、枠の構成がしっかりしている。\",\n      \"location\": \"7日のセル内、数字右横\"\n    },\n    {\n      \"day\": 12,\n      \"confidence\": \"medium\",\n      \"description\": \"手書きの「田」に似た文字。多少枠や線が途切れているが、全体の形状は「田」に近い。\",\n      \"location\": \"12日のセル内、数字右隣\"\n    },\n    {\n      \"day\": 14,\n      \"confidence\": \"high\",\n      \"description\": \"手書きの「田」。中央十字線と上下左右の四角い枠が揃っている。\",\n      \"location\": \"14日のセル内、数字の横\"\n    },\n    {\n      \"day\": 3,\n      \"confidence\": \"medium\",\n      \"description\": \"3日のセルに朱色で書かれた別の「田」一部接続が弱いが形状から判断。\",\n      \"location\": \"3日のセルの左側中央近辺\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 30,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2025年11月（英語表記：November）\",\n    \"notes\": \"カレンダー中央上部から2025年11月の年月情報を高確度で認識。11月の周囲にある前後月は薄くグレー表示で除外。白地の11月の日付セルは手書き文字分析で「田」を多数検出。手書きインクの色は黒と朱色で判別可能。\"\n  }\n}"
+      ],
+      "found_dates": [
+        "2025-10-02",
+        "2025-10-03",
+        "2025-10-06",
+        "2025-10-09",
+        "2025-10-10",
+        "2025-10-13",
+        "2025-10-16",
+        "2025-10-17",
+        "2025-10-21",
+        "2025-10-22",
+        "2025-10-25",
+        "2025-10-29",
+        "2025-10-30",
+        "2025-11-03",
+        "2025-11-06",
+        "2025-11-07",
+        "2025-11-12",
+        "2025-11-14"
+      ],
+      "dates_count": 18,
+      "calendar_results": {
+        "account1": {
+          "2025-10-02": {
+            "status": "created",
+            "event_id": "arft8voocg8i0afr303p1fp9ls",
+            "message": "イベントが作成されました: 出勤 (2025-10-02)"
+          },
+          "2025-10-03": {
+            "status": "created",
+            "event_id": "h31kecdlcnjn34j31av5vs1sa8",
+            "message": "イベントが作成されました: 出勤 (2025-10-03)"
+          },
+          "2025-10-06": {
+            "status": "created",
+            "event_id": "ko2i3reb1419fuhn8b3ocebhe8",
+            "message": "イベントが作成されました: 出勤 (2025-10-06)"
+          },
+          "2025-10-09": {
+            "status": "created",
+            "event_id": "tfemfe9p89bn1btembjttca8h4",
+            "message": "イベントが作成されました: 出勤 (2025-10-09)"
+          },
+          "2025-10-10": {
+            "status": "created",
+            "event_id": "ilhu1bu302gr59srcqvtdmt38g",
+            "message": "イベントが作成されました: 出勤 (2025-10-10)"
+          },
+          "2025-10-13": {
+            "status": "created",
+            "event_id": "vi34g3qlkjr4pgjjv0acppj7u4",
+            "message": "イベントが作成されました: 出勤 (2025-10-13)"
+          },
+          "2025-10-16": {
+            "status": "created",
+            "event_id": "kkffs7mrdf2p6l1rkrkal3s83c",
+            "message": "イベントが作成されました: 出勤 (2025-10-16)"
+          },
+          "2025-10-17": {
+            "status": "created",
+            "event_id": "bealuqgc1qio2g9dog5sv2ijlk",
+            "message": "イベントが作成されました: 出勤 (2025-10-17)"
+          },
+          "2025-10-21": {
+            "status": "created",
+            "event_id": "k7ibbg1b6m51mck3g9478e15og",
+            "message": "イベントが作成されました: 出勤 (2025-10-21)"
+          },
+          "2025-10-22": {
+            "status": "created",
+            "event_id": "9tgk3rd1fbkodt4pet1nsfhloo",
+            "message": "イベントが作成されました: 出勤 (2025-10-22)"
+          },
+          "2025-10-25": {
+            "status": "created",
+            "event_id": "l474hpq2e81155qd2hikgnhobg",
+            "message": "イベントが作成されました: 出勤 (2025-10-25)"
+          },
+          "2025-10-29": {
+            "status": "created",
+            "event_id": "egqc4mt5catilkrubtobiu0nso",
+            "message": "イベントが作成されました: 出勤 (2025-10-29)"
+          },
+          "2025-10-30": {
+            "status": "created",
+            "event_id": "0iqo1sqqatugdba8l9udjmoqt0",
+            "message": "イベントが作成されました: 出勤 (2025-10-30)"
+          },
+          "2025-11-03": {
+            "status": "created",
+            "event_id": "iep6fv9h6dje211q0apgcouits",
+            "message": "イベントが作成されました: 出勤 (2025-11-03)"
+          },
+          "2025-11-06": {
+            "status": "created",
+            "event_id": "fqjskun8b5kq88tfnrnkmbeo94",
+            "message": "イベントが作成されました: 出勤 (2025-11-06)"
+          },
+          "2025-11-07": {
+            "status": "created",
+            "event_id": "lpmp93ak2rlag8lhlj568p5c30",
+            "message": "イベントが作成されました: 出勤 (2025-11-07)"
+          },
+          "2025-11-12": {
+            "status": "created",
+            "event_id": "a989odkkv497mju2jrfpbe7b5g",
+            "message": "イベントが作成されました: 出勤 (2025-11-12)"
+          },
+          "2025-11-14": {
+            "status": "created",
+            "event_id": "1b41sbbh29q5frfr0hfvpurh0g",
+            "message": "イベントが作成されました: 出勤 (2025-11-14)"
+          }
+        },
+        "account2": {
+          "2025-10-02": {
+            "status": "created",
+            "event_id": "fanqipqv9b3pkkgndcnqqpgskg",
+            "message": "イベントが作成されました: 出勤 (2025-10-02)"
+          },
+          "2025-10-03": {
+            "status": "created",
+            "event_id": "a1aleig1n36brk5p1otpm5j53k",
+            "message": "イベントが作成されました: 出勤 (2025-10-03)"
+          },
+          "2025-10-06": {
+            "status": "created",
+            "event_id": "32toovf0qv3v2c3setmf5dg87g",
+            "message": "イベントが作成されました: 出勤 (2025-10-06)"
+          },
+          "2025-10-09": {
+            "status": "created",
+            "event_id": "afg3lhnvs1o9o9gpj4u4j8ks2c",
+            "message": "イベントが作成されました: 出勤 (2025-10-09)"
+          },
+          "2025-10-10": {
+            "status": "created",
+            "event_id": "5e9deui2lp50d6d4oul251n2l4",
+            "message": "イベントが作成されました: 出勤 (2025-10-10)"
+          },
+          "2025-10-13": {
+            "status": "created",
+            "event_id": "hoobsm4jpfepji9kn5lme0e0so",
+            "message": "イベントが作成されました: 出勤 (2025-10-13)"
+          },
+          "2025-10-16": {
+            "status": "created",
+            "event_id": "fub72q9ihvm55l7a83hqvq4sjg",
+            "message": "イベントが作成されました: 出勤 (2025-10-16)"
+          },
+          "2025-10-17": {
+            "status": "created",
+            "event_id": "kmf6vmd8hne4ugviumgh32vi7k",
+            "message": "イベントが作成されました: 出勤 (2025-10-17)"
+          },
+          "2025-10-21": {
+            "status": "created",
+            "event_id": "puduubmn7vgrckcnutnjvsk410",
+            "message": "イベントが作成されました: 出勤 (2025-10-21)"
+          },
+          "2025-10-22": {
+            "status": "created",
+            "event_id": "d16u7gs622ht9mir17nm9els80",
+            "message": "イベントが作成されました: 出勤 (2025-10-22)"
+          },
+          "2025-10-25": {
+            "status": "created",
+            "event_id": "gj9l32745c437bbmavunloo3fo",
+            "message": "イベントが作成されました: 出勤 (2025-10-25)"
+          },
+          "2025-10-29": {
+            "status": "created",
+            "event_id": "7h3acr1r2u1grh90a2mflnqol8",
+            "message": "イベントが作成されました: 出勤 (2025-10-29)"
+          },
+          "2025-10-30": {
+            "status": "created",
+            "event_id": "mt0a6tdq1vivftiqogih08gq0o",
+            "message": "イベントが作成されました: 出勤 (2025-10-30)"
+          },
+          "2025-11-03": {
+            "status": "created",
+            "event_id": "i7km2ns48tl110vvik65b150fg",
+            "message": "イベントが作成されました: 出勤 (2025-11-03)"
+          },
+          "2025-11-06": {
+            "status": "created",
+            "event_id": "94kpkk296l40o5a0i69afmmt6o",
+            "message": "イベントが作成されました: 出勤 (2025-11-06)"
+          },
+          "2025-11-07": {
+            "status": "created",
+            "event_id": "kb9blvecurk7s0jiu817c55sm0",
+            "message": "イベントが作成されました: 出勤 (2025-11-07)"
+          },
+          "2025-11-12": {
+            "status": "created",
+            "event_id": "eid71m6t7gdrjhh9i2mc8uiiso",
+            "message": "イベントが作成されました: 出勤 (2025-11-12)"
+          },
+          "2025-11-14": {
+            "status": "created",
+            "event_id": "oqm60ca0h4305g7u68hrkfp910",
+            "message": "イベントが作成されました: 出勤 (2025-11-14)"
+          }
+        }
+      },
+      "success_count": 36,
+      "workflow_start_time": "2025-08-27T23:06:36.866675",
+      "workflow_end_time": "2025-08-27T23:07:43.213382"
+    }
+  },
+  "59e1ddea19b2248b2422df5582445f9b": {
+    "file_path": "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\IMG_1579.JPG",
+    "file_name": "IMG_1579.JPG",
+    "processed_at": "2025-08-28T00:45:41.908616",
+    "result": {
+      "success": true,
+      "execution_time": 45.499712,
+      "image_paths": [
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\IMG_1579.JPG"
+      ],
+      "event_title": "出勤",
+      "event_description": "カレンダー画像から自動検出された勤務日",
+      "dry_run": false,
+      "ai_analysis_results": [
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2025,\n    \"detected_month\": 9,\n    \"year_month_text\": \"2025 9 September\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"中央上部\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 1,\n      \"confidence\": \"high\",\n      \"description\": \"「田」の特徴が明瞭で、四角い枠と中央の十字線がはっきり見える手書き文字\",\n      \"location\": \"1日の日付セル中央付近\"\n    },\n    {\n      \"day\": 2,\n      \"confidence\": \"high\",\n      \"description\": \"1日と同様に明瞭な「田」の形で、四角い枠と十字線がはっきりしている\",\n      \"location\": \"2日の日付セル中央付近\"\n    },\n    {\n      \"day\": 5,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりした手書きの「田」で、十字の線と四角い枠の特徴が明確\",\n      \"location\": \"5日の日付セル中央付近\"\n    },\n    {\n      \"day\": 6,\n      \"confidence\": \"high\",\n      \"description\": \"明瞭な「田」で、四角い枠と十字の内部構造が正確にある手書き文字\",\n      \"location\": \"6日の日付セル中央付近\"\n    },\n    {\n      \"day\": 10,\n      \"confidence\": \"high\",\n      \"description\": \"中央に十字線があり、四角い形状が確認できる明瞭な「田」\",\n      \"location\": \"10日の日付セル中央付近\"\n    },\n    {\n      \"day\": 11,\n      \"confidence\": \"high\",\n      \"description\": \"十字の線が明確で四角い枠が整っている「田」の特徴が明確な文字\",\n      \"location\": \"11日の日付セル中央付近\"\n    },\n    {\n      \"day\": 15,\n      \"confidence\": \"medium\",\n      \"description\": \"「田」に似ているが、四角い枠の一部に曖昧な線がある手書き文字\",\n      \"location\": \"15日の日付セル中央付近\"\n    },\n    {\n      \"day\": 17,\n      \"confidence\": \"high\",\n      \"description\": \"中央に十字の線、しっかりした四角い枠がある「田」の手書き文字\",\n      \"location\": \"17日の日付セル中央付近\"\n    },\n    {\n      \"day\": 20,\n      \"confidence\": \"high\",\n      \"description\": \"四角い枠と十字の線がはっきりと見える明瞭な「田」\",\n      \"location\": \"20日の日付セル中央付近\"\n    },\n    {\n      \"day\": 22,\n      \"confidence\": \"medium\",\n      \"description\": \"「田」に似た形状だが、枠の一部が薄く不鮮明な箇所がある手書き文字\",\n      \"location\": \"22日の日付セル中央付近\"\n    },\n    {\n      \"day\": 24,\n      \"confidence\": \"high\",\n      \"description\": \"はっきりした四角い枠と中央の十字線を持つ「田」の特徴が明瞭な文字\",\n      \"location\": \"24日の日付セル中央付近\"\n    },\n    {\n      \"day\": 29,\n      \"confidence\": \"high\",\n      \"description\": \"明確な四角い枠と十字線を持つ「田」の手書き文字\",\n      \"location\": \"29日の日付セル中央付近\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 30,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2025年9月\",\n    \"notes\": \"カレンダー中央上部に2025、9月の情報がはっきりと表示されている。手書きの「田」は多くの日付に記入されており、明瞭なものが多数。前月・翌月の日付セルは背景色が異なるため除外し、範囲内の9月の日付で分析を行った。\"\n  }\n}"
+      ],
+      "found_dates": [
+        "2025-09-01",
+        "2025-09-02",
+        "2025-09-05",
+        "2025-09-06",
+        "2025-09-10",
+        "2025-09-11",
+        "2025-09-15",
+        "2025-09-17",
+        "2025-09-20",
+        "2025-09-22",
+        "2025-09-24",
+        "2025-09-29"
+      ],
+      "dates_count": 12,
+      "calendar_results": {
+        "account1": {
+          "2025-09-01": {
+            "status": "created",
+            "event_id": "84um918itkiqamtq7barun4vqc",
+            "message": "イベントが作成されました: 出勤 (2025-09-01)"
+          },
+          "2025-09-02": {
+            "status": "created",
+            "event_id": "u6v6jeh2gqhdn36gd46a3prg0k",
+            "message": "イベントが作成されました: 出勤 (2025-09-02)"
+          },
+          "2025-09-05": {
+            "status": "created",
+            "event_id": "5lg8acmq720bok6hk8hbrr6930",
+            "message": "イベントが作成されました: 出勤 (2025-09-05)"
+          },
+          "2025-09-06": {
+            "status": "created",
+            "event_id": "fup063ck64dbbpmmpeicffq9ao",
+            "message": "イベントが作成されました: 出勤 (2025-09-06)"
+          },
+          "2025-09-10": {
+            "status": "created",
+            "event_id": "ktta8k50l9gknbin6jsia46nds",
+            "message": "イベントが作成されました: 出勤 (2025-09-10)"
+          },
+          "2025-09-11": {
+            "status": "created",
+            "event_id": "v166gd6k5h182eoduf58q93v6o",
+            "message": "イベントが作成されました: 出勤 (2025-09-11)"
+          },
+          "2025-09-15": {
+            "status": "created",
+            "event_id": "opjgcc36l4q8i1frtvn00c3uq0",
+            "message": "イベントが作成されました: 出勤 (2025-09-15)"
+          },
+          "2025-09-17": {
+            "status": "created",
+            "event_id": "b22m7mh9menqhpa2scd9ue39eo",
+            "message": "イベントが作成されました: 出勤 (2025-09-17)"
+          },
+          "2025-09-20": {
+            "status": "created",
+            "event_id": "bvn4m61ocs2g05c9ibjp8l7ud4",
+            "message": "イベントが作成されました: 出勤 (2025-09-20)"
+          },
+          "2025-09-22": {
+            "status": "created",
+            "event_id": "c7vi82b10lthnh8booafsq9qh8",
+            "message": "イベントが作成されました: 出勤 (2025-09-22)"
+          },
+          "2025-09-24": {
+            "status": "created",
+            "event_id": "dak5hbq8po577gd00iff3lqd8g",
+            "message": "イベントが作成されました: 出勤 (2025-09-24)"
+          },
+          "2025-09-29": {
+            "status": "created",
+            "event_id": "5eo5q26tejtt278b1pcjd3sch0",
+            "message": "イベントが作成されました: 出勤 (2025-09-29)"
+          }
+        },
+        "account2": {
+          "2025-09-01": {
+            "status": "created",
+            "event_id": "df96p440gcaev4mmak1n5prr08",
+            "message": "イベントが作成されました: 出勤 (2025-09-01)"
+          },
+          "2025-09-02": {
+            "status": "created",
+            "event_id": "8rpop5c7j1v2fiu8gs6n0r8u10",
+            "message": "イベントが作成されました: 出勤 (2025-09-02)"
+          },
+          "2025-09-05": {
+            "status": "created",
+            "event_id": "hv7t4un3625911isge1r3t42mg",
+            "message": "イベントが作成されました: 出勤 (2025-09-05)"
+          },
+          "2025-09-06": {
+            "status": "created",
+            "event_id": "ueo7qlt2m69bkq7liu1cln6j2k",
+            "message": "イベントが作成されました: 出勤 (2025-09-06)"
+          },
+          "2025-09-10": {
+            "status": "created",
+            "event_id": "79k5pbvu95mh84nqjmgscc9bgc",
+            "message": "イベントが作成されました: 出勤 (2025-09-10)"
+          },
+          "2025-09-11": {
+            "status": "created",
+            "event_id": "qn9pvc7cb4u2rqvkhkncqt816k",
+            "message": "イベントが作成されました: 出勤 (2025-09-11)"
+          },
+          "2025-09-15": {
+            "status": "created",
+            "event_id": "u6mt3764frhmks5pk33cfsms90",
+            "message": "イベントが作成されました: 出勤 (2025-09-15)"
+          },
+          "2025-09-17": {
+            "status": "created",
+            "event_id": "7vbnu6t3959lm4hfsor9qukqkg",
+            "message": "イベントが作成されました: 出勤 (2025-09-17)"
+          },
+          "2025-09-20": {
+            "status": "created",
+            "event_id": "176ecl5uutlh2fo479gcuodoko",
+            "message": "イベントが作成されました: 出勤 (2025-09-20)"
+          },
+          "2025-09-22": {
+            "status": "created",
+            "event_id": "54db5igujmo8blktsahuq6mc84",
+            "message": "イベントが作成されました: 出勤 (2025-09-22)"
+          },
+          "2025-09-24": {
+            "status": "created",
+            "event_id": "nnlopf009vjkp3q9o330p3oghk",
+            "message": "イベントが作成されました: 出勤 (2025-09-24)"
+          },
+          "2025-09-29": {
+            "status": "created",
+            "event_id": "2p0mjhjv014csbljt20sog9fgk",
+            "message": "イベントが作成されました: 出勤 (2025-09-29)"
+          }
+        }
+      },
+      "success_count": 24,
+      "workflow_start_time": "2025-08-28T00:44:56.407482",
+      "workflow_end_time": "2025-08-28T00:45:41.907194"
+    }
+  },
+  "37448d701df08cc8ae3262428a27a0fe": {
+    "file_path": "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg",
+    "file_name": "test_image_for_notify.jpg",
+    "processed_at": "2025-08-28T00:59:16.411393",
+    "result": {
+      "success": false,
+      "error": "画像 C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg のAI画像認識に失敗しました"
+    }
+  },
+  "f275fce9c37ed59484faa29699eefa49": {
+    "file_path": "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg",
+    "file_name": "test_image_for_notify.jpg",
+    "processed_at": "2025-08-28T01:01:34.464651",
+    "result": {
+      "success": true,
+      "execution_time": 11.073966,
+      "image_paths": [
+        "C:\\Users\\taxa\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg"
+      ],
+      "event_title": "出勤",
+      "event_description": "カレンダー画像から自動検出された勤務日",
+      "dry_run": false,
+      "ai_analysis_results": [
+        "{\n  \"calendar_info\": {\n    \"detected_year\": 2026,\n    \"detected_month\": 1,\n    \"year_month_text\": \"2026年1月\",\n    \"detection_confidence\": \"high\",\n    \"location\": \"中央上部\"\n  },\n  \"found_dates\": [\n    {\n      \"day\": 5,\n      \"confidence\": \"high\",\n      \"description\": \"手書きで書かれた明確な『田』の文字。四角形の枠がはっきりしており中央に十字の線がある。\",\n      \"location\": \"5日のセル、中央付近\"\n    },\n    {\n      \"day\": 9,\n      \"confidence\": \"medium\",\n      \"description\": \"『田』に似た文字形。四角の枠が少し途切れているが中央の十字の線が見える。\",\n      \"location\": \"9日のセル、中央付近\"\n    }\n  ],\n  \"analysis\": {\n    \"total_cells_checked\": 31,\n    \"search_character\": \"田\",\n    \"search_method\": \"手書き文字の形状分析\",\n    \"confidence_threshold\": \"medium以上を検出対象\",\n    \"detected_year_month\": \"2026年1月\",\n    \"notes\": \"年月情報は中央上部に大きな文字で記載されており、確信度は高い。手書きの『田』は5日と9日に検出。背景のグレー日付や他月の日付は除外済み。\"\n  }\n}"
+      ],
+      "found_dates": [
+        "2026-01-05",
+        "2026-01-09"
+      ],
+      "dates_count": 2,
+      "calendar_results": {
+        "account1": {
+          "2026-01-05": {
+            "status": "created",
+            "event_id": "8m5pcmuosi7jbf576fkcl1mkvk",
+            "message": "イベントが作成されました: 出勤 (2026-01-05)"
+          },
+          "2026-01-09": {
+            "status": "created",
+            "event_id": "h9q5p0b4ab2bhrcft3pmhomv2k",
+            "message": "イベントが作成されました: 出勤 (2026-01-09)"
+          }
+        },
+        "account2": {
+          "2026-01-05": {
+            "status": "created",
+            "event_id": "35bql9mqcihar24jn55vgs5ieg",
+            "message": "イベントが作成されました: 出勤 (2026-01-05)"
+          },
+          "2026-01-09": {
+            "status": "created",
+            "event_id": "m8p9hu3155or3sjf7v8r7dclbk",
+            "message": "イベントが作成されました: 出勤 (2026-01-09)"
+          }
+        }
+      },
+      "success_count": 4,
+      "workflow_start_time": "2025-08-28T01:01:23.390018",
+      "workflow_end_time": "2025-08-28T01:01:34.463984"
+    }
+  }
+}
