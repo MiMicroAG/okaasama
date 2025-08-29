@@ -7,6 +7,7 @@
 ## 主要変更点（このリポジトリの現在の状態）
 - HEIC形式の画像をサポート（`pillow-heif` を利用）
 - マルチアカウント対応（`config.yaml` の `google_calendar.accounts` に個別の `enabled` フラグ）
+- **Gmail通知機能の追加**: スケジュール登録完了時に自動メール通知
 - OneDrive監視機能の改善：バッチ起動時は1回実行して終了（`--once`）、タスクスケジューラー向けに `run_monitor.bat` を更新
 - `monitor_path` に環境変数（例: `%USERNAME%`）を使えるように変更
 - 生成結果や処理済みファイルは `processed_files.json` に保存され、重複処理を防止
@@ -16,12 +17,16 @@
 カレンダー画像自動登録システム/
 ├── ai_calendar_analyzer.py      # AI画像認識モジュール（HEIC対応）
 ├── google_calendar_manager.py   # Google Calendar API連携モジュール（マルチアカウント）
+├── gmail_notifier.py            # Gmail通知機能モジュール
 ├── integrated_workflow.py       # 統合ワークフロー
 ├── onedrive_monitor.py          # OneDriveフォルダ監視スクリプト（--once/連続監視対応）
 ├── config_loader.py             # 設定ファイルローダー（環境変数展開対応）
 ├── config.yaml                  # 設定ファイル（例を参照）
+├── config.yaml.sample           # 設定ファイルサンプル
 ├── run_monitor.bat              # 監視スクリプト実行バッチ（タスクスケジューラー用）
-├── requirements.txt             # 依存関係（pillow-heif 追記済み）
+├── test_gmail_notification.py   # Gmail通知機能テストスクリプト
+├── requirements.txt             # 依存関係（pillow-heif, Gmail API対応）
+├── scripts/                     # ユーティリティスクリプト
 └── お母様カレンダー/             # テスト用画像等
     └── processed_files.json     # 監視で処理済みファイルを記録
 ```
@@ -34,6 +39,7 @@ requirements.txt に主要ライブラリを列挙しています。主なもの
 - tenacity
 - Pillow
 - pillow-heif  ← HEIC対応に必要
+- email.mime.text  ← Gmail通知機能に必要
 
 インストール:
 
@@ -43,11 +49,26 @@ pip install -r requirements.txt
 
 ## 設定（`config.yaml` の要点）
 - `openai`：OpenAI APIキーなど
+- `gmail`：Gmail通知機能の設定
+  - `enabled`: Gmail通知の有効/無効
+  - `credentials_file`: Gmail API認証情報ファイル
+  - `token_file`: Gmail APIトークンファイル
+  - `from_email`: 送信元メールアドレス
+  - `default_recipient`: デフォルト宛先メールアドレス
+  - `default_subject`: デフォルト件名
 - `google_calendar.accounts`：複数アカウント定義（例は最大4アカウント）
   - 各アカウントに `enabled: true/false` を設定して使用するアカウントを制御
   - 例:
 
 ```yaml
+gmail:
+  enabled: true
+  credentials_file: "credentials.json"
+  token_file: "token_gmail.json"
+  from_email: "your-email@gmail.com"
+  default_recipient: "recipient@example.com"
+  default_subject: "お母様 勤務スケジュールを登録しました"
+
 google_calendar:
   accounts:
     account1:
@@ -70,6 +91,12 @@ google_calendar:
   - 例: `C:/Users/%USERNAME%/OneDrive/Develop/work/okaasama/お母様カレンダー`
 
 - `workflow.dry_run`: テスト用に実際のカレンダー登録をスキップするモード
+
+## Gmail通知機能
+- スケジュール登録完了時に自動でメール通知を送信
+- `gmail_notifier.py` がGmail APIを使用して通知メールを送信
+- メール内容にはアカウント名、対象日数、登録結果の詳細が含まれます
+- テスト用スクリプト `test_gmail_notification.py` で動作確認可能
 
 ## マルチアカウント動作
 - `config_loader.get_google_calendar_accounts_config()` は `enabled: true` のアカウントのみを返します。
@@ -94,11 +121,16 @@ google_calendar:
    ```
 2. `config.yaml` を編集して `openai.api_key` と `google_calendar.accounts` を設定
 3. Google Calendar API の `credentials.json` 等を用意
-4. 動作確認（ダイアログで画像を選択）
+4. Gmail通知を使用する場合、`gmail` セクションも設定
+5. 動作確認（ダイアログで画像を選択）
    ```powershell
    python integrated_workflow.py --dry-run
    ```
-5. OneDrive監視をスケジューラーで動かす
+6. Gmail通知機能をテスト
+   ```powershell
+   python test_gmail_notification.py
+   ```
+7. OneDrive監視をスケジューラーで動かす
    - タスクの操作に `run_monitor.bat` を指定（`--once` が付くため1回で終了）
 
 ## トラブルシューティング
@@ -106,6 +138,10 @@ google_calendar:
 - HEICが開けない場合: `pillow-heif` がインストールされているか確認。
 - 監視フォルダが見つからない場合: `workflow.monitor_path` の展開後のパスを確認。
 - 文字化けする場合: バッチファイルで `chcp 65001` を有効にしているか確認。
+- Gmail通知が送信されない場合: 
+  - `config.yaml` の `gmail.enabled` が `true` になっているか確認
+  - `token_gmail.json` が存在し、有効なトークンが含まれているか確認
+  - Gmail APIのスコープが正しく設定されているか確認
 
 ## 追加情報・今後の改善
 - より細かいログ出力や通知（メール/Slack）連携の追加

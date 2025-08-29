@@ -14,6 +14,14 @@ openai:
   model: "gpt-4o-mini"  # 使用するモデル（高性能版）
   max_image_size_kb: 256  # 画像圧縮時の最大ファイルサイズ（KB）
 
+gmail:
+  enabled: false  # Gmail通知機能の有効/無効
+  credentials_file: "credentials.json"  # Gmail API OAuth認証情報ファイル
+  token_file: "token_gmail.json"  # Gmail API アクセストークンファイル
+  from_email: "your-email@gmail.com"  # 送信元メールアドレス
+  default_recipient: "recipient@example.com"  # デフォルト宛先メールアドレス
+  default_subject: "カレンダー自動登録通知"  # デフォルト件名
+
 google_calendar:
   # 複数アカウント設定（最大4つまで）
   # account1はメインアカウントとして使用されます
@@ -24,7 +32,6 @@ google_calendar:
       credentials_file: "credentials.json"  # OAuth認証情報ファイル
       token_file: "token.json"  # アクセストークンファイル
       calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
-      email: "main@example.com"  # 通知メール送信先アドレス
     
     account2:
       enabled: false  # このアカウントに登録するかどうか
@@ -32,7 +39,6 @@ google_calendar:
       credentials_file: "credentials2.json"  # OAuth認証情報ファイル
       token_file: "token2.json"  # アクセストークンファイル
       calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
-      email: "sub1@example.com"  # 通知メール送信先アドレス
     
     account3:
       enabled: false  # このアカウントに登録するかどうか
@@ -40,7 +46,6 @@ google_calendar:
       credentials_file: "credentials3.json"  # OAuth認証情報ファイル
       token_file: "token3.json"  # アクセストークンファイル
       calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
-      email: "sub2@example.com"  # 通知メール送信先アドレス
     
     account4:
       enabled: false  # このアカウントに登録するかどうか
@@ -48,15 +53,6 @@ google_calendar:
       credentials_file: "credentials4.json"  # OAuth認証情報ファイル
       token_file: "token4.json"  # アクセストークンファイル
       calendar_id: "primary"  # カレンダーID（primaryまたはメールアドレス）
-      email: "sub3@example.com"  # 通知メール送信先アドレス
-
-gmail:
-  enabled: true  # Gmail通知を有効にするかどうか
-  smtp_server: "smtp.gmail.com"  # SMTPサーバー
-  smtp_port: 587  # SMTPポート
-  username: "your-gmail@gmail.com"  # Gmailアドレス
-  password: "your-app-password"  # Gmail App Password（2段階認証の場合はアプリパスワード）
-  from_email: "your-gmail@gmail.com"  # 送信元アドレス
 
 workflow:
   event_title: "母出勤"  # 登録するイベントのタイトル
