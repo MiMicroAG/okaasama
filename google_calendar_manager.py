@@ -34,7 +34,7 @@ class GoogleCalendarManager:
         
         # 必要なスコープ（カレンダーの読み書き権限）
         self.SCOPES = ['https://www.googleapis.com/auth/calendar']
-        self.service = None
+        self.service: Optional[Any] = None
         
     def authenticate(self) -> bool:
         """
@@ -91,6 +91,9 @@ class GoogleCalendarManager:
         """
         if not self.service:
             return {'status': 'error', 'event_id': None, 'message': 'Google Calendar APIが認証されていません'}
+        
+        # ここでself.serviceはNoneではないことが保証されている
+        assert self.service is not None
         
         calendar_id = calendar_id or self.calendar_id
         
@@ -280,6 +283,9 @@ class GoogleCalendarManager:
         """
         if not self.service:
             return False
+        
+        # ここでself.serviceはNoneではないことが保証されている
+        assert self.service is not None
         
         calendar_id = calendar_id or self.calendar_id
         
