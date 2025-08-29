@@ -13,6 +13,7 @@ from tkinter import filedialog
 
 from ai_calendar_analyzer import AICalendarAnalyzer
 from google_calendar_manager import GoogleCalendarManager
+from gmail_notifier import GmailNotifier
 from config_loader import config_loader
 
 class IntegratedCalendarWorkflow:
@@ -203,6 +204,30 @@ class IntegratedCalendarWorkflow:
                 error_msg = f"カレンダー登録でエラーが発生: {e}"
                 print(f"✗ {error_msg}")
                 return {"success": False, "error": error_msg}
+        # スケジュール登録後のメール通知
+        try:
+            gmail_notifier = GmailNotifier()
+            for account_key, account_config in enabled_accounts.items():
+                email = account_config.get('email')
+                if not email:
+                    continue
+                if is_multi_account:
+                    account_results = calendar_results.get(account_key, {})
+                else:
+                    account_results = calendar_results
+                created_count = sum(1 for r in account_results.values() if r.get('status') == 'created')
+                skipped_count = sum(1 for r in account_results.values() if r.get('status') == 'skipped')
+                error_count = sum(1 for r in account_results.values() if r.get('status') == 'error')
+                message = f"作成={created_count}件, スキップ={skipped_count}件, エラー={error_count}件"
+                dates_for_account = list(account_results.keys())
+                gmail_notifier.send_completion_notification(
+                    account_config['name'],
+                    email,
+                    dates_for_account,
+                    {'message': message, 'calendar_results': account_results}
+                )
+        except Exception as e:
+            print(f"Gmail通知でエラーが発生: {e}")
 
         # ワークフロー完了
         workflow_end_time = datetime.datetime.now()
