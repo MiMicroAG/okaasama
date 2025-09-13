@@ -25,11 +25,5 @@ if %ERRORLEVEL% EQU 0 (
 echo %DATE% %TIME%
 echo 完了
 
-REM タスクスケジューラー実行時のために、強制終了を追加
-if "%SESSIONNAME%"=="Console" (
-    REM コンソールからの実行時は通常のexit
-    exit
-) else (
-    REM タスクスケジューラーからの実行時はcmd /cで強制終了
-    cmd /c exit
-)
+REM バッチファイルを終了してDOS窓を閉じる
+exit

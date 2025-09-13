@@ -83,5 +83,14 @@
       "workflow_start_time": "2025-08-29T21:34:39.953265",
       "workflow_end_time": "2025-08-29T21:34:59.080504"
     }
+  },
+  "d41d8cd98f00b204e9800998ecf8427e": {
+    "file_path": "C:\\Users\\jun\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg",
+    "file_name": "test_image_for_notify.jpg",
+    "processed_at": "2025-08-30T08:00:23.825548",
+    "result": {
+      "success": false,
+      "error": "画像 C:\\Users\\jun\\OneDrive\\Develop\\work\\okaasama\\お母様カレンダー\\test_image_for_notify.jpg のAI画像認識に失敗しました"
+    }
   }
 }
