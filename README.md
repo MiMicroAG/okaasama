@@ -4,15 +4,18 @@
 
 このシステムは、カレンダーの写真から特定の文字（「田」）を自動検出し、該当する日付をGoogleカレンダーに終日スケジュールとして自動登録するワークフローです。OneDriveの監視フォルダと連携して自動実行できます。
 
-## 主要変更点（このリポジトリの現在の状態）
-- HEIC形式の画像をサポート（`pillow-heif` を利用）
-- マルチアカウント対応（`config.yaml` の `google_calendar.accounts` に個別の `enabled` フラグ）
-- **Gmail通知機能の追加**: スケジュール登録完了時に自動メール通知
-  - **アカウント別通知**: 各カレンダーのオーナー宛に個別通知
-- **グローバル重複チェック**: 複数アカウント間での重複イベントを検知・防止
-- OneDrive監視機能の改善：バッチ起動時は1回実行して終了（`--once`）、タスクスケジューラー向けに `run_monitor.bat` を更新
-- `monitor_path` に環境変数（例: `%USERNAME%`）を使えるように変更
-- 生成結果や処理済みファイルは `processed_files.json` に保存され、重複処理を防止
+## 主要変更点（最新）
+- HEIC形式の画像をサポート（`pillow-heif`）
+- マルチアカウント対応（`google_calendar.accounts` で `enabled` 制御）
+- **Gmail通知機能**: 登録結果をメールで通知
+- **重複登録対策の強化**:
+  - Tokyo日界に合わせたUTC検索で既存イベント検出を厳密化
+  - 終日イベントの `end.date` を翌日（排他的）に統一
+  - 既存イベントは確実にスキップ
+- **重複整理ツールの追加**: `scripts/cleanup_duplicates.py`（プレビュー/削除）、`scripts/clear_processed_entry.py`
+- **スケジューラ向けワンショット実行**: `workflow.monitor_once: true` で常に1回で終了
+- `run_monitor.bat` を同梱（UTF-8、`--once` 指定、終了コード反映）
+- `monitor_path` で環境変数展開対応（例: `%USERNAME%`）
 
 ## 内容（ファイル構成）
 ```
@@ -27,8 +30,10 @@
 ├── config.yaml.sample           # 設定ファイルサンプル
 ├── run_monitor.bat              # 監視スクリプト実行バッチ（タスクスケジューラー用）
 ├── test_gmail_notification.py   # Gmail通知機能テストスクリプト
-├── requirements.txt             # 依存関係（pillow-heif, Gmail API対応）
+├── requirements.txt             # 依存関係
 ├── scripts/                     # ユーティリティスクリプト
+│   ├── cleanup_duplicates.py    # 重複イベントの検出/削除（--applyで実行）
+│   └── clear_processed_entry.py # processed_files.json のエントリ削除
 └── お母様カレンダー/             # テスト用画像等
     └── processed_files.json     # 監視で処理済みファイルを記録
 ```
@@ -41,7 +46,7 @@ requirements.txt に主要ライブラリを列挙しています。主なもの
 - tenacity
 - Pillow
 - pillow-heif  ← HEIC対応に必要
-- email.mime.text  ← Gmail通知機能に必要
+  （標準ライブラリの `email` を使用。追加インストール不要）
 
 ## 設定（`config.yaml` の要点）
 - `openai`：OpenAI APIキーなど
@@ -50,12 +55,10 @@ requirements.txt に主要ライブラリを列挙しています。主なもの
   - `credentials_file`: Gmail API認証情報ファイル
   - `token_file`: Gmail APIトークンファイル
   - `from_email`: 送信元メールアドレス
-  - `default_recipient`: デフォルト宛先メールアドレス（アカウント別設定がない場合に使用）
+  - `default_recipient`: デフォルト宛先メールアドレス
   - `default_subject`: デフォルト件名
 - `google_calendar.accounts`：複数アカウント定義（例は最大4アカウント）
   - 各アカウントに `enabled: true/false` を設定して使用するアカウントを制御
-  - **各アカウントに `email` フィールドを追加**: アカウントオーナーのメールアドレスを指定
-  - **グローバル重複チェック**: 複数アカウント間で重複イベントを自動検知・防止
   - 例:
 
 ```yaml
@@ -70,9 +73,8 @@ gmail:
 google_calendar:
   accounts:
     account1:
-      enabled: true
+      enabled: false
       name: "jun"
-      email: "jun@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
       credentials_file: "credentials.json"
       token_file: "token.json"
       calendar_id: "primary"
@@ -80,11 +82,7 @@ google_calendar:
     account2:
       enabled: true
       name: "midori"
-      email: "midori@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
       credentials_file: "credentials2.json"
-      token_file: "token2.json"
-      calendar_id: "primary"
-```
       token_file: "token2.json"
       calendar_id: "primary"
 ```
@@ -97,9 +95,6 @@ google_calendar:
 
 ## Gmail通知機能
 - スケジュール登録完了時に自動でメール通知を送信
-- **アカウント別通知**: 各アカウントのオーナー宛に個別通知
-  - account1のイベント → account1の`email`宛に通知
-  - account2のイベント → account2の`email`宛に通知
 - `gmail_notifier.py` がGmail APIを使用して通知メールを送信
 - メール内容にはアカウント名、対象日数、登録結果の詳細が含まれます
 - テスト用スクリプト `test_gmail_notification.py` で動作確認可能
@@ -109,15 +104,18 @@ google_calendar:
 - ワークフローは有効なアカウント数に基づいて自動で「シングル」または「マルチ」モードを選択します。
   - 有効アカウントが1件: そのアカウントの `credentials_file` / `token_file` を使って登録
   - 複数件: 全ての有効アカウントに対して登録処理を試行
-- **グローバル重複チェック**: 複数アカウント間で重複イベントを自動検知・防止
-  - 同じ日付・同じタイトルのイベントが既に存在する場合、全アカウントでスキップ
-  - 重複チェック結果を詳細にログ出力
 
 ## OneDrive監視（`onedrive_monitor.py`）
 - 実行オプション:
   - `--once` : 1回チェックして終了（タスクスケジューラー向け）
-  - オプション無し: 連続監視（デフォルト）
-- `run_monitor.bat` はタスクスケジューラー用に `--once` を渡すように更新され、バッチ内で UTF-8 (chcp 65001) を設定します。
+  - オプション無し: 連続監視
+- 設定での制御: `config.yaml` の `workflow.monitor_once: true` で、オプション無しでもワンショット終了
+- タスクスケジューラーは `run_monitor.bat` を起動（UTF-8/`--once` 指定済み、終了コード返却）
+
+### タスクスケジューラーの推奨設定
+- 全般: 「ユーザーがログオンしているかどうかにかかわらず実行」「隠し」ON
+- 設定: 「タスクが既に実行中の場合: 新しいインスタンスを開始しない」
+- トリガー: 任意の時刻で1回（短い間隔の繰り返しは不要）
 
 ## processed_files.json の役割
 - 処理済みファイル（MD5ハッシュ）をキーに、処理日時・処理結果・ファイルパスを保存します。
@@ -127,6 +125,34 @@ google_calendar:
 - より細かいログ出力や通知（メール/Slack）連携の追加
 - 文字検出アルゴリズムの拡張（「田」以外の記号や手法）
 - Web UIによる運用管理
+
+---
+
+## 重複整理ツールの使い方（例: 2025年11月「出勤」）
+
+プレビュー（削除なし）:
+
+```powershell
+python .\scripts\cleanup_duplicates.py --title 出勤 --year 2025 --month 11
+```
+
+削除実行（保持は最初の1件）:
+
+```powershell
+python .\scripts\cleanup_duplicates.py --title 出勤 --year 2025 --month 11 --apply --keep-policy first
+```
+
+アカウント絞り込み（例: jun のみ）:
+
+```powershell
+python .\scripts\cleanup_duplicates.py --title 出勤 --year 2025 --month 11 --apply --account jun
+```
+
+処理済みフラグをクリア（再処理したいとき）:
+
+```powershell
+python .\scripts\clear_processed_entry.py --all
+```
 
 ---
 

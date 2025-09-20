@@ -234,8 +234,8 @@ def main():
         else:
             print(f"❌ {result['message']}")
 
-        # --onceオプションが指定された場合、終了
-        if args.once:
+        # --once または 設定の monitor_once が有効なら終了
+        if args.once or config.get('monitor_once', False):
             print("\n1回チェック完了。終了します。")
             return
 

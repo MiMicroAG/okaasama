@@ -187,7 +187,8 @@ class ConfigLoader:
             'event_title': self.get('workflow.event_title', '母出勤'),
             'event_description': self.get('workflow.event_description', 'カレンダー画像から自動検出された勤務日'),
             'dry_run': self.get('workflow.dry_run', False),
-            'monitor_path': monitor_path
+            'monitor_path': monitor_path,
+            'monitor_once': self.get('workflow.monitor_once', False)
         }
     
     def get_gmail_config(self) -> Dict[str, Any]:

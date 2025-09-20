@@ -4,6 +4,7 @@ Google Calendar APIを使用してスケジュールを管理するモジュー�
 """
 
 import datetime
+from zoneinfo import ZoneInfo
 import json
 import os.path
 from typing import Any, Dict, List, Optional
@@ -104,7 +105,15 @@ class GoogleCalendarManager:
                 print(f"⚠ {message}")
                 return {'status': 'skipped', 'event_id': None, 'message': message}
             
-            # 終日イベントの設定
+            # 終日イベントの設定（Google Calendarの終日イベントは end.date が翌日（排他的））
+            try:
+                start_date = datetime.date.fromisoformat(date_str)
+                end_date = start_date + datetime.timedelta(days=1)
+                end_date_str = end_date.isoformat()
+            except Exception:
+                # フォールバック（フォーマット不正時は同日扱いだが通常は到達しない）
+                end_date_str = date_str
+
             event = {
                 'summary': title,
                 'description': description,
@@ -113,7 +122,7 @@ class GoogleCalendarManager:
                     'timeZone': 'Asia/Tokyo',
                 },
                 'end': {
-                    'date': date_str,
+                    'date': end_date_str,
                     'timeZone': 'Asia/Tokyo',
                 },
                 'reminders': {
@@ -331,11 +340,19 @@ class GoogleCalendarManager:
         calendar_id = calendar_id or self.calendar_id
         
         try:
-            # 指定日のイベントを取得
+            # 指定日の東京タイムの1日をUTCに変換して検索範囲を設定
+            tz = ZoneInfo('Asia/Tokyo')
+            target_date = datetime.date.fromisoformat(date_str)
+            start_local = datetime.datetime.combine(target_date, datetime.time(0, 0, 0, tzinfo=tz))
+            end_local = start_local + datetime.timedelta(days=1)
+            time_min = start_local.astimezone(datetime.timezone.utc).isoformat().replace('+00:00', 'Z')
+            time_max = end_local.astimezone(datetime.timezone.utc).isoformat().replace('+00:00', 'Z')
+
+            # 指定日のイベント（開始が範囲内のもの）を取得
             events_result = self.service.events().list(
                 calendarId=calendar_id,
-                timeMin=f"{date_str}T00:00:00Z",
-                timeMax=f"{date_str}T23:59:59Z",
+                timeMin=time_min,
+                timeMax=time_max,
                 singleEvents=True,
                 orderBy='startTime'
             ).execute()
@@ -344,8 +361,25 @@ class GoogleCalendarManager:
             
             # 同じタイトルのイベントがあるかチェック
             for event in events:
-                if event.get('summary') == title:
-                    return True
+                if event.get('summary') != title:
+                    continue
+
+                # 念のため開始日が対象ローカル日付と一致するかも確認（終日/時刻あり双方対応）
+                start = event.get('start', {})
+                if 'date' in start:
+                    # 終日イベント
+                    if start.get('date') == date_str:
+                        return True
+                elif 'dateTime' in start:
+                    # 時刻指定イベント
+                    try:
+                        dt = datetime.datetime.fromisoformat(start['dateTime'].replace('Z', '+00:00'))
+                        dt_local = dt.astimezone(tz)
+                        if dt_local.date().isoformat() == date_str:
+                            return True
+                    except Exception:
+                        # 解析できない場合はタイトル一致のみで判断
+                        return True
             
             return False
             
