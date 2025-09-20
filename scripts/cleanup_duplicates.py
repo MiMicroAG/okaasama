@@ -50,8 +50,10 @@ def list_month_events_for_title(manager: GoogleCalendarManager, calendar_id: str
 
     events: List[Dict] = []
     page_token: Optional[str] = None
+    assert manager.service is not None, "Google Calendar service is not initialized"
+    service = manager.service
     while True:
-        resp = manager.service.events().list(
+        resp = service.events().list(
             calendarId=calendar_id,
             timeMin=time_min,
             timeMax=time_max,
@@ -152,9 +154,11 @@ def cleanup_duplicates(year: int, month: int, title: str, apply_changes: bool, k
                     print(f"  削除候補: id={e.get('id')} summary={e.get('summary')}")
 
                 if apply_changes:
+                    assert manager.service is not None, "Google Calendar service is not initialized"
+                    service = manager.service
                     for e in delete_list:
                         try:
-                            manager.service.events().delete(calendarId=acc['calendar_id'], eventId=e['id']).execute()
+                            service.events().delete(calendarId=acc['calendar_id'], eventId=e['id']).execute()
                             del_total += 1
                         except HttpError as he:
                             print(f"  削除失敗 id={e.get('id')} error={he}")

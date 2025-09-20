@@ -25,7 +25,9 @@ def check_duplicate_events():
         if manager.authenticate():
             # 最近の「出勤」イベントを確認
             try:
-                events_result = manager.service.events().list(
+                assert manager.service is not None, "Google Calendar service is not initialized"
+                service = manager.service
+                events_result = service.events().list(
                     calendarId=account_config['calendar_id'],
                     q='出勤',
                     timeMin='2025-11-01T00:00:00Z',
