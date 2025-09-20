@@ -196,7 +196,7 @@ class GoogleCalendarManager:
     
     def create_events_for_multiple_accounts(self, dates: List[str], title: str, description: str = "", skip_if_exists: bool = True) -> Dict[str, Dict[str, Dict[str, Any]]]:
         """
-        複数のGoogleアカウントのカレンダーにイベントを作成
+        複数のGoogleアカウントのカレンダーにイベントを作成（グローバル重複チェック付き）
         
         Args:
             dates (List[str]): 日付のリスト（YYYY-MM-DD形式）
@@ -210,8 +210,6 @@ class GoogleCalendarManager:
         # 複数アカウント設定を取得
         accounts_config = config_loader.get_google_calendar_accounts_config()
         
-        print(f"デバッグ: 取得したアカウント設定: {accounts_config}")
-        
         if not accounts_config:
             print("⚠ 有効なアカウントが見つかりません")
             print("config.yamlのaccounts設定でenabled: trueのアカウントがあるか確認してください")
@@ -224,25 +222,68 @@ class GoogleCalendarManager:
         print(f"対象アカウント数: {len(accounts_config)}")
         print(f"対象日数: {len(dates)}")
         
-        for account_key, account_config in accounts_config.items():
-            print(f"\n--- {account_config['name']} ({account_key}) のカレンダーに登録中 ---")
+        # グローバル重複チェック（全アカウントを横断してチェック）
+        if skip_if_exists:
+            print(f"\n--- グローバル重複チェック ---")
+            dates_to_create = []
             
-            # アカウントごとのマネージャーインスタンス作成
-            manager = GoogleCalendarManager(
-                credentials_file=account_config['credentials_file'],
-                token_file=account_config['token_file']
-            )
-            
-            if manager.authenticate():
-                # カレンダーIDを指定してイベント作成
-                account_results = manager.create_multiple_events(
-                    dates, title, description, skip_if_exists, account_config['calendar_id']
+            for date_str in dates:
+                existing_accounts = self.check_existing_events_across_accounts(date_str, title, accounts_config)
+                if existing_accounts:
+                    print(f"⚠ {date_str}: 既に存在するアカウント - {', '.join(existing_accounts)}")
+                    # 重複がある場合は全アカウントでスキップ
+                    for account_key in accounts_config.keys():
+                        if account_key not in results:
+                            results[account_key] = {}
+                        results[account_key][date_str] = {
+                            'status': 'skipped',
+                            'event_id': None,
+                            'message': f'他のアカウントで既に存在: {", ".join(existing_accounts)}'
+                        }
+                else:
+                    print(f"✓ {date_str}: 新規作成可能")
+                    dates_to_create.append(date_str)
+        else:
+            dates_to_create = dates
+        
+        # 重複がない日付のみ作成
+        if dates_to_create:
+            print(f"\n--- イベント作成 ---")
+            for account_key, account_config in accounts_config.items():
+                print(f"\n--- {account_config['name']} ({account_key}) のカレンダーに登録中 ---")
+                
+                # アカウントごとのマネージャーインスタンス作成
+                manager = GoogleCalendarManager(
+                    credentials_file=account_config['credentials_file'],
+                    token_file=account_config['token_file']
                 )
-                results[account_key] = account_results
-                print(f"✓ {account_config['name']}: 登録完了")
-            else:
-                results[account_key] = {'error': {'status': 'error', 'message': '認証失敗'}}
-                print(f"✗ {account_config['name']}: 認証失敗")
+                
+                if manager.authenticate():
+                    # 重複がない日付のみ作成
+                    account_results = manager.create_multiple_events(
+                        dates_to_create, title, description, False, account_config['calendar_id']  # 個別チェックは不要
+                    )
+                    
+                    # 既存の結果にマージ
+                    if account_key not in results:
+                        results[account_key] = {}
+                    results[account_key].update(account_results)
+                    
+                    print(f"✓ {account_config['name']}: 登録完了")
+                else:
+                    # 認証失敗の場合
+                    for date_str in dates_to_create:
+                        if account_key not in results:
+                            results[account_key] = {}
+                        results[account_key][date_str] = {
+                            'status': 'error',
+                            'event_id': None,
+                            'message': '認証失敗'
+                        }
+                    print(f"✗ {account_config['name']}: 認証失敗")
+        else:
+            print(f"\n--- イベント作成 ---")
+            print("すべての日付で重複が検出されたため、作成をスキップします")
         
         # 全体サマリー
         print(f"\n=== 複数アカウント登録結果 ===")
@@ -308,9 +349,37 @@ class GoogleCalendarManager:
             
             return False
             
+            return False
+            
         except Exception as e:
             print(f"既存イベントチェックエラー: {e}")
             return False
+
+    def check_existing_events_across_accounts(self, date_str: str, title: str, accounts_config: Dict) -> List[str]:
+        """
+        すべての有効アカウントで指定日のイベントが存在するかチェック
+        
+        Args:
+            date_str (str): 日付（YYYY-MM-DD形式）
+            title (str): イベントのタイトル
+            accounts_config (Dict): アカウント設定
+            
+        Returns:
+            List[str]: イベントが存在するアカウント名のリスト
+        """
+        existing_accounts = []
+        
+        for account_key, account_config in accounts_config.items():
+            manager = GoogleCalendarManager(
+                credentials_file=account_config['credentials_file'],
+                token_file=account_config['token_file']
+            )
+            
+            if manager.authenticate():
+                if manager.check_existing_events(date_str, title, account_config['calendar_id']):
+                    existing_accounts.append(account_config['name'])
+        
+        return existing_accounts
 
 def main():
     """メイン関数 - テスト用"""

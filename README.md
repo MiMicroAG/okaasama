@@ -8,6 +8,8 @@
 - HEIC形式の画像をサポート（`pillow-heif` を利用）
 - マルチアカウント対応（`config.yaml` の `google_calendar.accounts` に個別の `enabled` フラグ）
 - **Gmail通知機能の追加**: スケジュール登録完了時に自動メール通知
+  - **アカウント別通知**: 各カレンダーのオーナー宛に個別通知
+- **グローバル重複チェック**: 複数アカウント間での重複イベントを検知・防止
 - OneDrive監視機能の改善：バッチ起動時は1回実行して終了（`--once`）、タスクスケジューラー向けに `run_monitor.bat` を更新
 - `monitor_path` に環境変数（例: `%USERNAME%`）を使えるように変更
 - 生成結果や処理済みファイルは `processed_files.json` に保存され、重複処理を防止
@@ -48,10 +50,12 @@ requirements.txt に主要ライブラリを列挙しています。主なもの
   - `credentials_file`: Gmail API認証情報ファイル
   - `token_file`: Gmail APIトークンファイル
   - `from_email`: 送信元メールアドレス
-  - `default_recipient`: デフォルト宛先メールアドレス
+  - `default_recipient`: デフォルト宛先メールアドレス（アカウント別設定がない場合に使用）
   - `default_subject`: デフォルト件名
 - `google_calendar.accounts`：複数アカウント定義（例は最大4アカウント）
   - 各アカウントに `enabled: true/false` を設定して使用するアカウントを制御
+  - **各アカウントに `email` フィールドを追加**: アカウントオーナーのメールアドレスを指定
+  - **グローバル重複チェック**: 複数アカウント間で重複イベントを自動検知・防止
   - 例:
 
 ```yaml
@@ -66,8 +70,9 @@ gmail:
 google_calendar:
   accounts:
     account1:
-      enabled: false
+      enabled: true
       name: "jun"
+      email: "jun@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
       credentials_file: "credentials.json"
       token_file: "token.json"
       calendar_id: "primary"
@@ -75,7 +80,11 @@ google_calendar:
     account2:
       enabled: true
       name: "midori"
+      email: "midori@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
       credentials_file: "credentials2.json"
+      token_file: "token2.json"
+      calendar_id: "primary"
+```
       token_file: "token2.json"
       calendar_id: "primary"
 ```
@@ -88,6 +97,9 @@ google_calendar:
 
 ## Gmail通知機能
 - スケジュール登録完了時に自動でメール通知を送信
+- **アカウント別通知**: 各アカウントのオーナー宛に個別通知
+  - account1のイベント → account1の`email`宛に通知
+  - account2のイベント → account2の`email`宛に通知
 - `gmail_notifier.py` がGmail APIを使用して通知メールを送信
 - メール内容にはアカウント名、対象日数、登録結果の詳細が含まれます
 - テスト用スクリプト `test_gmail_notification.py` で動作確認可能
@@ -97,6 +109,9 @@ google_calendar:
 - ワークフローは有効なアカウント数に基づいて自動で「シングル」または「マルチ」モードを選択します。
   - 有効アカウントが1件: そのアカウントの `credentials_file` / `token_file` を使って登録
   - 複数件: 全ての有効アカウントに対して登録処理を試行
+- **グローバル重複チェック**: 複数アカウント間で重複イベントを自動検知・防止
+  - 同じ日付・同じタイトルのイベントが既に存在する場合、全アカウントでスキップ
+  - 重複チェック結果を詳細にログ出力
 
 ## OneDrive監視（`onedrive_monitor.py`）
 - 実行オプション:

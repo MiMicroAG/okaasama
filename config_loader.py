@@ -139,6 +139,7 @@ class ConfigLoader:
             if account_config.get('enabled', False):
                 enabled_accounts[account_key] = {
                     'name': account_config.get('name', account_key),
+                    'email': account_config.get('email'),  # メールアドレスを追加
                     'credentials_file': account_config.get('credentials_file', f'credentials_{account_key}.json'),
                     'token_file': account_config.get('token_file', f'token_{account_key}.json'),
                     'calendar_id': account_config.get('calendar_id', 'primary')

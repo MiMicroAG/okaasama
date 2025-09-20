@@ -124,28 +124,52 @@ openai:
   max_image_size_kb: 256  # 画像圧縮サイズ
 ```
 
-#### 5.2.2 Gmail通知設定（オプション）
+#### 5.2.2 Gmail通知設定（アカウント別通知対応）
 ```yaml
 gmail:
   enabled: true  # 通知を有効にする場合
   credentials_file: "credentials.json"
   token_file: "token_gmail.json"
   from_email: "your-email@gmail.com"  # 送信元メールアドレス
-  default_recipient: "recipient@example.com"  # 通知先メールアドレス
+  default_recipient: "default@example.com"  # デフォルト通知先（アカウント別設定がない場合）
   default_subject: "お母様 勤務スケジュールを登録しました"
 ```
 
-#### 5.2.3 Google Calendar設定
+**新機能**: Gmail通知は各アカウントのオーナー宛に個別送信されます：
+- account1のイベント → `account1.email` 宛に通知
+- account2のイベント → `account2.email` 宛に通知
+- アカウントにemailが設定されていない場合 → `default_recipient` 宛に通知
+
+#### 5.2.3 Google Calendar設定（複数アカウント対応）
 ```yaml
 google_calendar:
   accounts:
     account1:
       enabled: true
-      name: "メインアカウント"
+      name: "jun"  # アカウント表示名
+      email: "jun@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
       credentials_file: "credentials.json"
       token_file: "token.json"
       calendar_id: "primary"
+    
+    account2:
+      enabled: true
+      name: "midori"  # アカウント表示名
+      email: "midori@taxa.jp"  # アカウントオーナーのメールアドレス（通知先）
+      credentials_file: "credentials2.json"
+      token_file: "token2.json"
+      calendar_id: "primary"
+    
+    account3:
+      enabled: false  # 使用しない場合はfalse
+      name: "サブアカウント"
+      email: "sub@example.com"
+      credentials_file: "credentials3.json"
+      token_file: "token3.json"
+      calendar_id: "primary"
 ```
+
+**重要**: 各アカウントに `email` フィールドを設定することで、そのアカウントのイベント登録完了時にオーナー宛に個別通知が送信されます。
 
 ### 5.3 環境変数の設定（オプション）
 APIキーを環境変数で管理する場合：
@@ -229,6 +253,25 @@ python test_gmail_notification.py
 - タスクを作成したら、右クリック→「実行」でテスト実行
 - ログを確認して正常動作するかチェック
 
+## 🎯 **最新機能のご紹介**
+
+### アカウント別Gmail通知
+- **各アカウントのオーナー宛に個別通知**
+- account1のイベント → jun@taxa.jp 宛に通知
+- account2のイベント → midori@taxa.jp 宛に通知
+- 設定: `google_calendar.accounts[accountX].email`
+
+### グローバル重複チェック
+- **複数アカウント間での重複イベント自動検知**
+- 同じ日付・同じタイトルのイベントが既に存在する場合、全アカウントでスキップ
+- 重複チェック結果を詳細にログ出力
+- 不要な重複登録を完全に防止
+
+### 改善されたOneDrive監視
+- ファイルハッシュによる正確な重複チェック
+- `processed_files.json` での処理履歴管理
+- `--once` オプションでの単発実行（タスクスケジューラー対応）
+
 ## 🔍 **ステップ9: トラブルシューティング**
 
 ### 9.1 Pythonが見つからない
@@ -271,12 +314,18 @@ python -c "from PIL import Image; Image.open('test.jpg'); print('画像OK')"
 ### 9.5 Gmail通知が送信されない
 - `config.yaml` の `gmail.enabled` が `true` になっているか確認
 - `token_gmail.json` が存在するか確認
-- メールアドレスが正しく設定されているか確認
+- **アカウント別通知の場合**: 各アカウントの `email` フィールドが正しく設定されているか確認
+- メールアドレスが正しく設定されていない場合、`default_recipient` が使用されます
 
-### 9.6 タスクスケジューラーが動作しない
-- Pythonのフルパスが正しいか確認
-- プロジェクトフォルダのパスが正しいか確認
-- ログファイルを確認：`%TEMP%\Schedlgu.txt`
+### 9.6 重複チェックが機能しない
+- `processed_files.json` が正しく作成されているか確認
+- 複数アカウント使用時はグローバル重複チェックが自動的に有効
+- ログに「⚠ 重複検出」または「⚠ 既に存在するアカウント」と表示されるか確認
+
+### 9.7 複数アカウントの認証エラー
+- 各アカウントの `credentials.json` と `token.json` が正しく配置されているか確認
+- アカウントごとに異なる認証情報を使用しているか確認
+- `config_loader.py` が各アカウントの設定を正しく読み込んでいるか確認
 
 ## 📚 **参考情報**
 
